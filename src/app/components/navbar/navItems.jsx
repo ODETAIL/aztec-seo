@@ -18,7 +18,7 @@ const NavItem = styled.li`
     text-sm
     md:text-base
     text-white
-    font-bold
+    font-medium
     mr-1
     md:mr-5
     cursor-pointer

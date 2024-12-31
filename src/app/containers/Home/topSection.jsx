@@ -5,6 +5,7 @@ import tw from "twin.macro";
 import PorcheImg from "../../components/assets/images/porche.png";
 import BlobImg from "../../components/assets/images/blob.svg";
 import { SCREENS } from "../../components/responsive";
+import Button from "../../components/button";
 
 const TopSectionContainer = styled.div`
   min-height: 400px;
@@ -64,7 +65,7 @@ const Description = styled.p`
     sm:max-h-full
     overflow-hidden
     max-h-12
-    text-gray-500
+    text-gray-400
   `}
 `;
 
@@ -131,14 +132,22 @@ const StandaloneCar = styled.div`
   @media (min-width: ${SCREENS.lg}) {
     height: 15em;
     right: -9em;
-    top: -5em;
+    top: -4em;
   }
 
   @media (min-width: ${SCREENS.xl}) {
-    height: 18em;
+    height: 19em;
     right: -5em;
-    top: -5em;
+    top: -4em;
   }
+`;
+
+const ButtonsContainer = styled.div`
+  ${tw`
+    flex
+    mt-4
+    flex-wrap
+  `}
 `;
 
 const TopSection = () => {
@@ -150,6 +159,10 @@ const TopSection = () => {
           Get in touch today for a free, no-obligation quote and let us handle
           your auto glass needs with ease and professionalism.
         </Description>
+        <ButtonsContainer>
+          <Button theme="filled" text="Get Free Quote" />
+          <Button theme="outlined" text="Call Us Now" />
+        </ButtonsContainer>
       </LeftContainer>
       <RightContainer>
         <BlobContainer>
