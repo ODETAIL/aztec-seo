@@ -26,12 +26,12 @@ export const menuStyles = {
     top: "0px",
   },
   bmMenu: {
-    background: "#373a47",
+    background: "#1d2124",
     padding: "2.5em 1.5em 0",
     fontSize: "1.15em",
   },
   bmMorphShape: {
-    fill: "#373a47",
+    fill: "#1d2124",
   },
   bmItemList: {
     color: "#b8b7ad",
