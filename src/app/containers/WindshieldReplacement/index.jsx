@@ -4,6 +4,8 @@ import tw from "twin.macro";
 import NavBar from "../../components/navbar";
 import { Footer } from "../../components/footer";
 import { Marginer } from "../../components/marginer";
+import TopSection from "./topSection";
+import AboutSection from "./aboutSection";
 
 const PageContainer = styled.div`
   ${tw`
@@ -20,7 +22,9 @@ const WindshieldReplacement = () => {
   return (
     <PageContainer>
       <NavBar />
-      <Marginer direction="vertical" margin="8em" />
+      <TopSection />
+      <Marginer direction="vertical" margin="2em" />
+      <AboutSection />
       <Footer />
     </PageContainer>
   );

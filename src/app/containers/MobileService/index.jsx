@@ -23,7 +23,7 @@ const MobileService = () => {
     <PageContainer>
       <NavBar />
       <TopSection />
-      <Marginer direction="vertical" margin="4em" />
+      <Marginer direction="vertical" margin="2em" />
       <AboutSection />
       <Footer />
     </PageContainer>

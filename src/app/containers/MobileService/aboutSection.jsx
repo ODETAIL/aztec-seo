@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import tw from "twin.macro";
 import { SCREENS } from "../../components/responsive";
-import JeepImg from "../../components/assets/images/jeep.png";
+import SuvImg from "../../components/assets/images/suv_1.png";
 
 const AboutUsContainer = styled.div`
   ${tw`
@@ -30,15 +30,15 @@ const CarContainer = styled.div`
   }
 
   @media (min-width: ${SCREENS.md}) {
-    height: 20em;
+    height: 18em;
   }
 
   @media (min-width: ${SCREENS.lg}) {
-    height: 22em;
+    height: 20em;
   }
 
   @media (min-width: ${SCREENS["2xl"]}) {
-    height: 30em;
+    height: 25em;
     margin-left: 0;
   }
 `;
@@ -89,7 +89,7 @@ const AboutSection = () => {
         </InfoText>
       </InfoContainer>
       <CarContainer>
-        <img src={JeepImg} alt="" />
+        <img src={SuvImg} alt="" />
       </CarContainer>
     </AboutUsContainer>
   );

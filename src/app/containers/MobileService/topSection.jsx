@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import tw from "twin.macro";
+import GlassImg from "../../components/assets/images/bg_2.jpg";
 
 const TopSectionContainer = styled.div`
   /* min-height: 400px; */
@@ -10,10 +11,6 @@ const TopSectionContainer = styled.div`
     max-w-screen-2xl
     flex
     justify-between
-    lg:pl-12
-    lg:pr-12
-    pl-3
-    pr-3
   `}
 `;
 
@@ -26,13 +23,30 @@ const HeaderSection = styled.div`
     justify-center
     text-white
   `}
-  background: url("https://via.placeholder.com/1920x500") center/cover no-repeat;
+  background: url(${GlassImg}) center/cover no-repeat;
   background-attachment: fixed;
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.55); /* Adjust the opacity (0.5) as needed */
+    z-index: 1;
+  }
+
+  > * {
+    position: relative;
+    z-index: 2;
+  }
 `;
 
 const HeaderText = styled.h1`
   ${tw`
-    text-4xl
+    text-6xl
     font-bold
   `}
 `;
