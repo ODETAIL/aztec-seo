@@ -73,6 +73,13 @@ const InfoText = styled.p`
   `};
 `;
 
+const SpanText = styled.span`
+  ${tw`
+    font-semibold
+    text-gray-200
+  `}
+`;
+
 const AboutSection = () => {
   return (
     <AboutUsContainer>
@@ -82,10 +89,11 @@ const AboutSection = () => {
           For your convenience, we offer mobile windshield replacement services
           that bring our expertise right to your doorstep. Whether you're at
           home, work, or any location that suits you, our team will come to you,
-          making the process hassle-free. In just 60-90 minutes, we'll have your
-          windshield expertly replaced, so you don't have to take time out of
-          your busy day to visit our shop. Let us take care of everything while
-          you carry on with your day.
+          making the process hassle-free. In just{" "}
+          <SpanText>60-90 minutes</SpanText>, we'll have your windshield
+          expertly replaced, so you don't have to take time out of your busy day
+          to visit our shop. Let us take care of everything while you carry on
+          with your day.
         </InfoText>
       </InfoContainer>
       <CarContainer>

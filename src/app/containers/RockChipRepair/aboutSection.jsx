@@ -64,21 +64,29 @@ const InfoText = styled.p`
   `};
 `;
 
+const PriceText = styled.span`
+  ${tw`
+    font-semibold
+    text-gray-200
+  `}
+`;
+
 const AboutSection = () => {
   return (
     <AboutUsContainer>
       <InfoContainer>
         <InfoText>
           At Aztec Auto Glass , we offer efficient and affordable rock chip
-          repair to keep your windshield in top condition. For just $42.95,
-          we'll expertly repair one chip, with each additional chip repaired for
-          only $19.95.
+          repair to keep your windshield in top condition. For just{" "}
+          <PriceText>$42.95</PriceText>, we'll expertly repair one chip, with
+          each additional chip repaired for only <PriceText>$19.95</PriceText>.
         </InfoText>
         <InfoText>
           For those who want year-round peace of mind, our subscription plan is
-          an unbeatable value. For just $99, enjoy unlimited rock chip repairs
-          throughout the year, ensuring your windshield remains free of damage
-          no matter how many chips you encounter.
+          an unbeatable value. For just <PriceText>$99</PriceText>, enjoy
+          unlimited rock chip repairs throughout the year, ensuring your
+          windshield remains free of damage no matter how many chips you
+          encounter.
         </InfoText>
         <InfoText>
           Protect your investment and maintain your vehicle's safety with our
