@@ -7,7 +7,7 @@ import { SCREENS } from "../responsive";
 import { menuStyles } from "./menuStyles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const ListContainer = styled.ul`
   z-index: 999;
@@ -22,7 +22,7 @@ const NavItem = styled(({ menu, ...rest }) => <li {...rest} />)`
     text-sm
     md:text-base
     text-white
-    font-medium
+    font-semibold
     mr-1
     md:mr-5
     cursor-pointer
@@ -34,7 +34,13 @@ const NavItem = styled(({ menu, ...rest }) => <li {...rest} />)`
 
   & > a:hover {
     ${tw`
-      text-gray-500
+      text-gray-300
+    `}
+  }
+
+  a.active {
+    ${tw`
+      text-[#1194e4]
     `}
   }
 
@@ -42,10 +48,10 @@ const NavItem = styled(({ menu, ...rest }) => <li {...rest} />)`
     menu &&
     css`
       ${tw`
-    text-white
-    text-xl
-    mb-3
-  `}
+        text-white
+        text-xl
+        mb-3
+      `}
     `}
 `;
 
@@ -76,7 +82,7 @@ const DropdownMenu = styled(({ isOpen, ...rest }) => <ul {...rest} />)`
     transition-all
     duration-200
     border-b-2
-    border-blue-500
+    border-[#1194e4]
   `}
 
   ${({ isOpen }) =>
@@ -110,25 +116,29 @@ const NavItems = () => {
       <Menu right styles={menuStyles}>
         <ListContainer>
           <NavItem menu={true}>
-            <Link to="/">Home</Link>
+            <NavLink to="/" end>
+              Home
+            </NavLink>
           </NavItem>
           <NavItem menu={true}>
-            <Link to="/quote">Free Quote</Link>
+            <NavLink to="/quote">Free Quote</NavLink>
           </NavItem>
           <NavItem menu={true}>
-            <Link to="/mobile-service">Mobile Service</Link>
+            <NavLink to="/mobile-service">Mobile Service</NavLink>
           </NavItem>
           <NavItem menu={true}>
-            <Link to="/windshield-replacement">Windshield Replacement</Link>
+            <NavLink to="/windshield-replacement">
+              Windshield Replacement
+            </NavLink>
           </NavItem>
           <NavItem menu={true}>
-            <Link to="/rock-chip-repair">Rock Chip Repair</Link>
+            <NavLink to="/rock-chip-repair">Rock Chip Repair</NavLink>
           </NavItem>
           <NavItem menu={true}>
-            <Link to="/privacy-policy">Privacy Policy</Link>
+            <NavLink to="/privacy-policy">Privacy Policy</NavLink>
           </NavItem>
           <NavItem menu={true}>
-            <Link to="/contact">Contact</Link>
+            <NavLink to="/contact">Contact</NavLink>
           </NavItem>
         </ListContainer>
       </Menu>
@@ -137,16 +147,18 @@ const NavItems = () => {
   return (
     <ListContainer>
       <NavItem>
-        <Link to="/">Home</Link>
+        <NavLink to="/" end>
+          Home
+        </NavLink>
       </NavItem>
       <NavItem>
-        <Link to="/quote">Free Quote</Link>
+        <NavLink to="/quote">Free Quote</NavLink>
       </NavItem>
       <NavItem>
-        <Link to="/mobile-service">Mobile Service</Link>
+        <NavLink to="/mobile-service">Mobile Service</NavLink>
       </NavItem>
       <NavItem>
-        <Link to="/windshield-replacement">Windshield Replacement</Link>
+        <NavLink to="/windshield-replacement">Windshield Replacement</NavLink>
       </NavItem>
       <NavItem onClick={toggleDropdown}>
         More
@@ -155,13 +167,13 @@ const NavItems = () => {
         </IconWrapper>
         <DropdownMenu isOpen={isDropdownOpen} onMouseLeave={toggleDropdown}>
           <DropdownItem>
-            <Link to="/rock-chip-repair">Rock Chip Repair</Link>
+            <NavLink to="/rock-chip-repair">Rock Chip Repair</NavLink>
           </DropdownItem>
           <DropdownItem>
-            <Link to="/privacy-policy">Privacy Policy</Link>
+            <NavLink to="/privacy-policy">Privacy Policy</NavLink>
           </DropdownItem>
           <DropdownItem>
-            <Link to="/contact">Contact</Link>
+            <NavLink to="/contact">Contact</NavLink>
           </DropdownItem>
         </DropdownMenu>
       </NavItem>

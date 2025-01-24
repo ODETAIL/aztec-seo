@@ -3,7 +3,21 @@ module.exports = {
   purge: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
   darkMode: false, // or 'media' or 'class'
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        poppins: ["Poppins", "sans-serif"],
+      },
+      colors: {
+        cBlue: {
+          DEFAULT: "#1194e4", // Default shade for customBlue
+          light: "#33aaff", // Lighter shade
+          dark: "#0b74c9", // Darker shade
+        },
+        cGreen: {
+          DEFAULT: "#39b972",
+        },
+      },
+    },
     screens: {
       sm: "640px",
       // => @media (min-width: 640px) { ... }

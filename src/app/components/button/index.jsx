@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import tw from "twin.macro";
 
@@ -26,19 +27,19 @@ const BaseButton = styled.button`
 
 const OutlinedButton = styled(BaseButton)`
   ${tw`
-    bg-blue-500
+    bg-cBlue
     hover:bg-transparent
-    hover:text-blue-500
-    hover:border-blue-500
+    hover:text-cBlue
+    hover:border-cBlue
   `}
 `;
 
 const FilledButton = styled(BaseButton)`
   ${tw`
-    border-blue-500
-    text-blue-500
+    border-cBlue
+    text-cBlue
     bg-transparent
-    hover:bg-blue-500
+    hover:bg-cBlue
     hover:text-white
     hover:border-transparent
   `}
@@ -46,9 +47,13 @@ const FilledButton = styled(BaseButton)`
 
 const Button = (props) => {
   const { theme, text } = props;
+  const navigate = useNavigate();
 
   if (theme === "outlined") return <FilledButton>{text}</FilledButton>;
-  else return <OutlinedButton>{text}</OutlinedButton>;
+  else
+    return (
+      <OutlinedButton onClick={() => navigate("/quote")}>{text}</OutlinedButton>
+    );
 };
 
 export default Button;

@@ -12,7 +12,7 @@ const LogoContainer = styled.div`
 const LogoText = styled.div`
   ${tw`
     text-xl
-    md:text-2xl
+    md:text-3xl
     font-bold
     text-white
     m-1
@@ -21,7 +21,12 @@ const LogoText = styled.div`
 
 const Image = styled.div`
   width: auto;
-  ${tw`h-6 md:h-9`}
+  ${tw`
+    h-6 
+    md:h-12
+    rounded-full
+    bg-stone-900
+  `}
   img {
     width: auto;
     height: 100%;

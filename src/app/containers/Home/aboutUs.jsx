@@ -1,104 +1,284 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import tw from "twin.macro";
-import { SCREENS } from "../../components/responsive";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import { faClock } from "@fortawesome/free-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import CarModelCanvas from "../../components/models/carModel";
+import { useNavigate } from "react-router-dom";
 
-import JeepImg from "../../components/assets/images/jeep.png";
-
-const AboutUsContainer = styled.div`
+const SectionContainer = styled.div`
   ${tw`
-    w-full
-    flex
-    flex-wrap
-    items-center
-    justify-center
-    pt-4
-    pb-4
-    pr-7
-    pl-7
-    md:pl-0
-    md:pr-0
-
-  `};
-`;
-
-const CarContainer = styled.div`
-  width: auto;
-  height: 15em;
-  margin-left: -50px;
-
-  img {
-    width: auto;
-    height: 100%;
-  }
-
-  @media (min-width: ${SCREENS.md}) {
-    height: 22em;
-  }
-
-  @media (min-width: ${SCREENS.lg}) {
-    height: 25em;
-  }
-
-  @media (min-width: ${SCREENS["2xl"]}) {
-    height: 30em;
-    margin-left: 0;
-  }
-`;
-
-const InfoContainer = styled.div`
-  ${tw`
-    md:w-1/2
     flex
     flex-col
-    md:ml-6
-    2xl:ml-16
-  `};
+    w-full
+    py-12
+    text-black
+    items-center
+  `}
 `;
 
-const Title = styled.h1`
+const ContentWrapper = styled.div`
   ${tw`
+    flex
+    flex-col
+    lg:flex-row
+    items-center
+    justify-between
+    w-3/5
+    px-6
+    lg:px-20
+  `}
+`;
+
+const ModelContainer = styled.div`
+  ${tw`
+    relative
+    w-full
+    lg:w-3/4
+  `}
+`;
+
+const ArrowButton = styled.button`
+  ${tw`
+    mx-4
+    p-4
+    bg-cBlue
     text-white
+    font-semibold
+    rounded-full
+    shadow-md
+    hover:bg-blue-700
+    transition-all
+    duration-300
+  `}
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const DescriptionContainer = styled.div`
+  ${tw`
+    w-full
+    lg:w-1/3
+    lg:mt-0
+    p-8
+    md:p-14
+    flex
+    flex-col
+    text-center
+    md:text-left
+    md:h-full
+    rounded-xl
+    md:rounded-r-xl
+    md:rounded-l-none
+  `}
+  background-color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+`;
+
+const Title = styled.h2`
+  ${tw`
     text-2xl
     md:text-4xl
-    font-extrabold
-    md:font-black
-    md:leading-normal
-  `};
+    font-bold
+    text-black
+  `}
 `;
 
-const InfoText = styled.p`
+const TitleContainer = styled.div`
   ${tw`
-    md:max-w-2xl
-    text-sm
-    md:text-base
-    text-gray-400
-    font-normal
-    mt-4
-  `};
+    flex
+    flex-col
+  `}
 `;
 
-export function AboutUs() {
+const TimeEstimate = styled.p`
+  ${tw`
+    text-sm
+    md:text-lg
+    text-black
+    font-bold
+    flex
+    items-center
+    py-2
+    tracking-wide
+  `}
+`;
+
+const TimeEstimateIcon = styled(FontAwesomeIcon)`
+  ${tw`
+    text-cBlue
+    mr-2
+    text-base
+    md:text-lg
+  `}
+`;
+
+const FeaturesList = styled.ul`
+  ${tw`
+    list-none
+    space-y-2
+    my-4
+  `}
+`;
+
+const FeatureItem = styled.li`
+  ${tw`
+    flex
+    items-center
+    text-sm
+  `}
+  &::before {
+    content: "✓";
+    ${tw`
+      text-green-500
+      mr-2
+      text-lg
+    `}
+  }
+`;
+
+const NavigationButtons = styled.div`
+  ${tw`
+    absolute 
+    bottom-4 
+    left-1/2 
+    transform -translate-x-1/2 
+    flex
+    items-center
+    justify-center
+    z-10 
+  `}
+`;
+
+const ActionButton = styled.button`
+  ${tw`
+    p-5
+    bg-cBlue
+    text-white
+    font-semibold
+    rounded-full
+    shadow-md
+    hover:bg-blue-700
+    transition-all
+    duration-300
+  `}
+  width: 100%;
+`;
+
+const AboutUs = () => {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const navigate = useNavigate();
+
+  const nextView = () => {
+    setActiveIndex((prev) => (prev + 1) % windshieldTypes.length);
+  };
+
+  const prevView = () => {
+    setActiveIndex(
+      (prev) => (prev - 1 + windshieldTypes.length) % windshieldTypes.length
+    );
+  };
+
+  const windshieldTypes = [
+    {
+      model: "/models/mazda_model.glb",
+      title: "Windshield",
+      subtitle: "Premium Protection for Your Vehicle",
+      time: "90 minutes",
+      features: [
+        "Scratch-resistant glass",
+        "UV protection coating",
+        "Affordable pricing",
+      ],
+      primitivePos: [-46, -50, -45],
+      camPos: [0, 5, -15],
+      lookPos: [0, 8, -30],
+      rotation: [0, 0, 0],
+    },
+    {
+      model: "/models/mazda_model.glb",
+      title: "Side Glass",
+      subtitle: "Enhanced Durability and Clarity",
+      time: "90 minutes",
+      features: [
+        "Enhanced clarity",
+        "Thermal protection",
+        "Premium durability",
+      ],
+      primitivePos: [-46, -50, -45],
+      camPos: [150, -5, -165],
+      lookPos: [150, 0, -170],
+      rotation: [-170, 90, 170],
+    },
+    {
+      model: "/models/mazda_model.glb",
+      title: "Back Glass",
+      subtitle: "Enhanced Durability and Clarity",
+      time: "120 minutes",
+      features: [
+        "Enhanced clarity",
+        "Thermal protection",
+        "Premium durability",
+      ],
+      primitivePos: [-46, -50, -45],
+      camPos: [1.5, 15, -305],
+      lookPos: [1.5, 0, -305],
+      rotation: [-170, 1, 180],
+    },
+  ];
+
+  const activeView = windshieldTypes[activeIndex];
+
   return (
-    <AboutUsContainer>
-      <CarContainer>
-        <img src={JeepImg} alt="" />
-      </CarContainer>
-      <InfoContainer>
-        <Title>
-          Feel The Best Experience With Our Auto Glass Replacement Services
-        </Title>
-        <InfoText>
-          Since 2016, Aztec Autoglass has been dedicated to providing fast,
-          reliable auto glass replacement services across Airdrie, Calgary, and
-          surrounding areas. Our mobile car windshield replacement team brings
-          expert care right to your door, ensuring a smooth, stress-free
-          experience. With our trusted auto glass mobile service, we guarantee
-          high-quality results and customer satisfaction wherever you are. Get
-          in touch today for a free, no-obligation quote and let us handle your
-          auto glass needs with ease and professionalism.
-        </InfoText>
-      </InfoContainer>
-    </AboutUsContainer>
+    <SectionContainer>
+      <ContentWrapper>
+        {/* Car Model */}
+        <ModelContainer>
+          <CarModelCanvas
+            modelPath={activeView.model}
+            primitivePos={activeView.primitivePos}
+            camPos={activeView.camPos}
+            lookPos={activeView.lookPos}
+            rotation={activeView.rotation}
+          />
+
+          {/* Navigation Buttons Under the Model */}
+          <NavigationButtons>
+            <ArrowButton onClick={prevView}>❮</ArrowButton>
+            <ArrowButton onClick={nextView}>❯</ArrowButton>
+          </NavigationButtons>
+        </ModelContainer>
+
+        <DescriptionContainer>
+          <TitleContainer>
+            <Title>{windshieldTypes[activeIndex].title}</Title>
+            <TimeEstimate>
+              <TimeEstimateIcon icon={faClock} />
+              {windshieldTypes[activeIndex].time} minimum
+            </TimeEstimate>
+          </TitleContainer>
+
+          <FeaturesList>
+            {windshieldTypes[activeIndex].features.map((feature, index) => (
+              <FeatureItem key={index}>{feature}</FeatureItem>
+            ))}
+          </FeaturesList>
+          <ActionButton
+            aria-label={`Get a quote for ${windshieldTypes[activeIndex].title}`}
+            onClick={() => navigate("/quote")}
+          >
+            Get Quote
+          </ActionButton>
+        </DescriptionContainer>
+      </ContentWrapper>
+    </SectionContainer>
   );
-}
+};
+
+export default AboutUs;

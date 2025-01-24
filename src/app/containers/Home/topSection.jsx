@@ -49,7 +49,7 @@ const Slogan = styled.h1`
     md:text-5xl
     lg:font-black
     md:font-extrabold
-    text-white
+    text-black
     mb-4
     sm:leading-snug
     lg:leading-normal
@@ -65,7 +65,7 @@ const Description = styled.p`
     sm:max-h-full
     overflow-hidden
     max-h-12
-    text-gray-400
+    text-gray-700
   `}
 `;
 

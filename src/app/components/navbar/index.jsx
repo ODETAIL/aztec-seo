@@ -6,17 +6,23 @@ import NavItems from "./navItems";
 
 const NavBarContainer = styled.div`
   min-height: 68px;
+  background-color: rgba(0, 0, 0, 0.75);
   ${tw`
     w-full
-    max-w-screen-2xl
     flex
     flex-row
+    md:flex-wrap
     items-center
-    pt-4
-    lg:pl-12
-    lg:pr-12
+    py-6
+    px-4 
+    lg:px-12
     justify-between
   `}
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  box-sizing: border-box;
 `;
 
 const LogoContainer = styled.div``;
