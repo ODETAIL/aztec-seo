@@ -42,13 +42,11 @@ const RightContainer = styled.div`
 
 const Slogan = styled.h1`
   ${tw`
-    font-bold
+    font-black
     text-2xl
     xl:text-6xl
     sm:text-3xl
     md:text-5xl
-    lg:font-black
-    md:font-extrabold
     text-black
     mb-4
     sm:leading-snug

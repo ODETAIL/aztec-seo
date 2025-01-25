@@ -68,7 +68,7 @@ const StepTitle = styled.h4`
   ${tw`
     text-black
     text-lg
-    font-semibold
+    font-bold
     mt-4
   `}
 `;
@@ -79,6 +79,7 @@ const StepDescription = styled.p`
     md:text-sm
     text-center
     w-10/12
+    font-medium
     text-gray-700
   `}
 `;

@@ -17,6 +17,7 @@ const AppContainer = styled.div`
     h-full
     flex
     flex-col
+    font-montserrat
     overflow-x-hidden
   `}
 `;

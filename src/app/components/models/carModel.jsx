@@ -14,6 +14,8 @@ import {
 import { sRGBEncoding } from "@react-three/drei/helpers/deprecated";
 import { BackSide, MathUtils, Vector3 } from "three";
 
+const isMobile = window.innerWidth < 768;
+
 const CarModelCanvas = ({
   modelPath,
   primitivePos,
@@ -22,49 +24,51 @@ const CarModelCanvas = ({
   rotation,
 }) => {
   return (
-    <Canvas
-      shadows
-      camera={{ position: [0, 0, 0], fov: 30 }}
-      style={{ height: "600px", borderRadius: "10px 0 0 10px", width: "100%" }}
-    >
-      <PerformanceMonitor />
-      {/* Lights */}
-      <spotLight
-        position={[0, 15, 0]}
-        angle={0.3}
-        penumbra={1}
-        castShadow
-        intensity={2}
-        shadow-bias={-0.0001}
-      />
-      <ambientLight intensity={0.5} />
-      <AccumulativeShadows
-        position={[0, -1.16, 0]}
-        frames={100}
-        alphaTest={0.9}
-        scale={10}
+    <div className="w-full h-[350px] md:h-[600px]">
+      <Canvas
+        shadows
+        camera={{ position: [0, 0, 0], fov: 30 }}
+        style={{ borderRadius: isMobile ? "10px 10px 0 0" : "10px 0 0 10px" }}
       >
-        <RandomizedLight
-          amount={8}
-          radius={10}
-          ambient={0.5}
-          position={[1, 5, -1]}
+        <PerformanceMonitor />
+        {/* Lights */}
+        <spotLight
+          position={[0, 15, 0]}
+          angle={0.3}
+          penumbra={1}
+          castShadow
+          intensity={2}
+          shadow-bias={-0.0001}
         />
-      </AccumulativeShadows>
-      <OrbitControls
-        enableZoom={true} // Enable zoom functionality
-      />
-      <Suspense fallback={<Loader />}>
-        {/* Model */}
-        <CarModel modelPath={modelPath} primitivePos={primitivePos} />
-        {/* Environment */}
-        <Environment frames={Infinity} resolution={256} background blur={1}>
-          <Lightformers />
-        </Environment>
-      </Suspense>
-      {/* Camera Rig */}
-      <CameraRig camPos={camPos} lookPos={lookPos} rotation={rotation} />
-    </Canvas>
+        <ambientLight intensity={0.5} />
+        <AccumulativeShadows
+          position={[0, -1.16, 0]}
+          frames={100}
+          alphaTest={0.9}
+          scale={10}
+        >
+          <RandomizedLight
+            amount={8}
+            radius={10}
+            ambient={0.5}
+            position={[1, 5, -1]}
+          />
+        </AccumulativeShadows>
+        <OrbitControls
+          enableZoom={true} // Enable zoom functionality
+        />
+        <Suspense fallback={<Loader />}>
+          {/* Model */}
+          <CarModel modelPath={modelPath} primitivePos={primitivePos} />
+          {/* Environment */}
+          <Environment frames={Infinity} resolution={256} background blur={1}>
+            <Lightformers />
+          </Environment>
+        </Suspense>
+        {/* Camera Rig */}
+        <CameraRig camPos={camPos} lookPos={lookPos} rotation={rotation} />
+      </Canvas>
+    </div>
   );
 };
 

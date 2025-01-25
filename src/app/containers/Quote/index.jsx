@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import tw from "twin.macro";
 import NavBar from "../../components/navbar";
@@ -7,7 +7,9 @@ import { Footer } from "../../components/footer";
 import StepOne from "../../components/steps/StepOne";
 import GarageBg from "../../components/assets/images/garage_bg.jpg";
 import CarbonBg from "../../components/assets/images/carbon_bg.jpg";
+import WindshieldBg from "../../components/assets/images/chip.jpg";
 import StepTwo from "../../components/steps/StepTwo";
+import StepThree from "../../components/steps/StepThree";
 
 const PageContainer = styled.div`
   ${tw`
@@ -31,6 +33,43 @@ const SectionContainer = styled.div`
   `}
 `;
 
+const SectionLandingContainer = styled.div`
+  ${tw`
+    relative
+    flex
+    flex-col
+    w-full
+    items-center
+    justify-center
+    py-12
+    min-h-full
+    md:min-h-[85vh]
+  `}/* background-image: url(${WindshieldBg});
+  background-size: cover; 
+  background-position: center; 
+  background-repeat: no-repeat;
+
+  &::before {
+    content: "";
+    ${tw`
+      absolute
+      top-0
+      left-0
+      w-full
+      h-full
+    `}
+    background-color: rgba(0, 0, 0, 0.55); 
+    z-index: 0; 
+  }
+
+  > * {
+    z-index: 1; 
+    ${tw`
+      text-center
+    `}
+  } */
+`;
+
 const SectionOneContainer = styled.div`
   ${tw`
     relative
@@ -38,11 +77,12 @@ const SectionOneContainer = styled.div`
     flex-col
     w-full
     items-center
+    justify-center
     py-12
   `}
   background-image: url(${GarageBg});
   background-size: cover;
-  background-position: center 85%;
+  background-position: center;
   background-repeat: no-repeat;
 
   &::before {
@@ -95,27 +135,6 @@ const SectionThreeContainer = styled.div`
   }
 `;
 
-const ScrollToTopButton = styled.button`
-  ${tw`
-    fixed
-    bottom-8
-    right-8
-    w-12
-    h-12
-    bg-cBlue
-    text-white
-    text-lg
-    flex
-    items-center
-    justify-center
-    rounded-full
-    shadow-lg
-    hover:bg-blue-700
-    transition-all
-    duration-300
-  `}
-`;
-
 const StepSubtitle = styled.h3`
   ${tw`
     text-xl
@@ -150,30 +169,17 @@ const SectionContent = styled.p`
 `;
 
 const Quote = () => {
-  const [showScrollButton, setShowScrollButton] = useState(false);
-
-  const handleScroll = () => {
-    if (window.scrollY > 300) {
-      setShowScrollButton(true);
-    } else {
-      setShowScrollButton(false);
-    }
-  };
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
   return (
     <PageContainer>
       <NavBar />
+      <SectionLandingContainer>
+        <h2 className="text-3xl md:text-9xl tracking-wide font-extrabold text-cBlue mb-4">
+          Auto Glass Repair
+        </h2>
+        <h3 className="text-2xl md:text-7xl tracking-wide font-extrabold text-black mt-4">
+          Online Booking Service
+        </h3>
+      </SectionLandingContainer>
       <SectionOneContainer>
         <StepSubtitle>Step 01</StepSubtitle>
         <SectionTitle>Choose Your Car Type</SectionTitle>
@@ -190,6 +196,7 @@ const Quote = () => {
       <SectionThreeContainer>
         <StepSubtitle>Step 03</StepSubtitle>
         <SectionTitle>Date and Time</SectionTitle>
+        <StepThree />
       </SectionThreeContainer>
       <SectionContainer>
         <StepSubtitle>Step 04</StepSubtitle>
@@ -199,11 +206,6 @@ const Quote = () => {
       </SectionContainer>
       <Marginer direction="vertical" margin="8em" />
       <Footer />
-      {showScrollButton && (
-        <ScrollToTopButton onClick={scrollToTop} title="Scroll to top">
-          ↑
-        </ScrollToTopButton>
-      )}
     </PageContainer>
   );
 };

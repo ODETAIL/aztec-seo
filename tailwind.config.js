@@ -6,6 +6,9 @@ module.exports = {
     extend: {
       fontFamily: {
         poppins: ["Poppins", "sans-serif"],
+        montserrat: ["Montserrat", "san-serif"],
+        oswald: ["Oswald", "san-serif"],
+        proximanova: ["Proxima Nova", "san-serif"],
       },
       colors: {
         cBlue: {

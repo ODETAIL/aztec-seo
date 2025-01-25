@@ -27,7 +27,8 @@ const ContentWrapper = styled.div`
     lg:flex-row
     items-center
     justify-between
-    w-3/5
+    w-3/4
+    md:w-3/5
     px-6
     lg:px-20
   `}
@@ -73,7 +74,7 @@ const DescriptionContainer = styled.div`
     text-center
     md:text-left
     md:h-full
-    rounded-xl
+    rounded-b-xl
     md:rounded-r-xl
     md:rounded-l-none
   `}
@@ -85,7 +86,7 @@ const Title = styled.h2`
   ${tw`
     text-2xl
     md:text-4xl
-    font-bold
+    font-extrabold
     text-black
   `}
 `;
@@ -124,6 +125,7 @@ const FeaturesList = styled.ul`
     list-none
     space-y-2
     my-4
+    font-normal
   `}
 `;
 

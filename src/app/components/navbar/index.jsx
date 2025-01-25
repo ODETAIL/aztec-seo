@@ -14,13 +14,14 @@ const NavBarContainer = styled.div`
     md:flex-wrap
     items-center
     py-6
-    px-4 
+    px-4
     lg:px-12
     justify-between
   `}
   position: fixed;
   top: 0;
   left: 0;
+  right: 0;
   z-index: 50;
   box-sizing: border-box;
 `;

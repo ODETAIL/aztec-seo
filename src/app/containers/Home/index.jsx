@@ -17,6 +17,7 @@ const PageContainer = styled.div`
   w-full
   h-full
   items-center
+
   `}
 `;
 
@@ -65,7 +66,7 @@ const SectionThreeContainer = styled.div`
 const SectionSubtitle = styled.h3`
   ${tw`
     text-lg
-    font-semibold
+    font-bold
     uppercase
     text-cBlue
     mt-6
@@ -89,7 +90,7 @@ const SectionTitle = styled.h2`
   ${tw`
     text-2xl
     md:text-6xl
-    font-bold
+    font-extrabold
     text-white
     tracking-wide
     mb-4

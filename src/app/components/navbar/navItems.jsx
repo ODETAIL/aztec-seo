@@ -22,7 +22,7 @@ const NavItem = styled(({ menu, ...rest }) => <li {...rest} />)`
     text-sm
     md:text-base
     text-white
-    font-semibold
+    font-bold
     mr-1
     md:mr-5
     cursor-pointer
@@ -40,7 +40,7 @@ const NavItem = styled(({ menu, ...rest }) => <li {...rest} />)`
 
   a.active {
     ${tw`
-      text-[#1194e4]
+      text-cBlue
     `}
   }
 
@@ -82,7 +82,7 @@ const DropdownMenu = styled(({ isOpen, ...rest }) => <ul {...rest} />)`
     transition-all
     duration-200
     border-b-2
-    border-[#1194e4]
+    border-cBlue
   `}
 
   ${({ isOpen }) =>

@@ -106,6 +106,7 @@ const LocationIcon = styled(FontAwesomeIcon)`
 const AddressDetails = styled.div`
   ${tw`
     text-sm
+    font-medium
     text-black
   `}
 `;
@@ -113,7 +114,7 @@ const AddressDetails = styled.div`
 const DetailTitle = styled.h3`
   ${tw`
     text-lg
-    font-semibold
+    font-bold
     mb-2
     text-black
   `}

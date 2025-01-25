@@ -13,7 +13,7 @@ const LogoText = styled.div`
   ${tw`
     text-xl
     md:text-3xl
-    font-bold
+    font-black
     text-white
     m-1
   `}
