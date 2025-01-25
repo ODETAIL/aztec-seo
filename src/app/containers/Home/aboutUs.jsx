@@ -28,9 +28,6 @@ const ContentWrapper = styled.div`
     items-center
     justify-between
     w-3/4
-    md:w-3/5
-    px-6
-    lg:px-20
   `}
 `;
 
@@ -39,6 +36,9 @@ const ModelContainer = styled.div`
     relative
     w-full
     lg:w-3/4
+    rounded-t-xl
+    md:rounded-l-xl
+    md:rounded-r-none
   `}
 `;
 
