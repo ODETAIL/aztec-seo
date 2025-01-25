@@ -1,14 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import tw from "twin.macro";
-import {
-  format,
-  addDays,
-  startOfWeek,
-  addWeeks,
-  isBefore,
-  startOfDay,
-} from "date-fns";
+import { format, addDays, startOfWeek, isBefore, startOfDay } from "date-fns";
 
 const CalendarContainer = styled.div`
   ${tw`
