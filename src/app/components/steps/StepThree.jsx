@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import tw from "twin.macro";
 import { format, addDays, startOfWeek, isBefore, startOfDay } from "date-fns";
+import { useBooking } from "../../hooks/useBooking";
 
 const CalendarContainer = styled.div`
   ${tw`
@@ -37,7 +38,9 @@ const Title = styled.h2`
   `}
 `;
 
-const WeekRow = styled.div`
+const WeekRow = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "daysToShow",
+})`
   ${tw`
     w-full
     grid
@@ -82,7 +85,9 @@ const WeekText = styled.div`
   `}
 `;
 
-const TimeSlot = styled.button`
+const TimeSlot = styled.button.withConfig({
+  shouldForwardProp: (prop) => !["isSelected", "isDisabled"].includes(prop),
+})`
   ${tw`
     text-sm
     text-black
@@ -96,8 +101,11 @@ const TimeSlot = styled.button`
     transition-all
     duration-200
   `}
-  background-color: ${({ isSelected }) => (isSelected ? "#39b972" : "#f1f1f1")};
-  color: ${({ isSelected }) => (isSelected ? "#ffffff" : "#000000")};
+  background-color: ${({ isSelected, isDisabled }) =>
+    isDisabled ? "#e0e0e0" : isSelected ? "#39b972" : "#f1f1f1"};
+  color: ${({ isSelected, isDisabled }) =>
+    isDisabled ? "#a0a0a0" : isSelected ? "#ffffff" : "#000000"};
+  cursor: ${({ isDisabled }) => (isDisabled ? "not-allowed" : "pointer")};
 `;
 
 const FooterText = styled.div`
@@ -109,7 +117,9 @@ const FooterText = styled.div`
   `}
 `;
 
-const DateContainer = styled.div`
+const DateContainer = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "isToday",
+})`
   ${tw`
     mb-4
   `}
@@ -117,7 +127,9 @@ const DateContainer = styled.div`
 `;
 
 const StepThree = () => {
-  const today = startOfDay(new Date()); // Current day at 00:00
+  const { setBookingData } = useBooking();
+  const now = new Date(); // Current date and time
+  const today = startOfDay(now); // Start of the current day
   const [currentWeek, setCurrentWeek] = useState(
     startOfWeek(today, { weekStartsOn: 0 })
   );
@@ -125,7 +137,6 @@ const StepThree = () => {
   const [daysToShow, setDaysToShow] = useState(7); // Default to showing 7 days
 
   useEffect(() => {
-    // Adjust daysToShow based on screen size
     const updateDaysToShow = () => {
       if (window.innerWidth <= 768) {
         setDaysToShow(3); // Show 3 days on mobile
@@ -140,39 +151,56 @@ const StepThree = () => {
     return () => window.removeEventListener("resize", updateDaysToShow);
   }, []);
 
-  // Generate dates for the week dynamically
   const daysOfWeek = Array.from({ length: daysToShow }).map((_, i) =>
     addDays(currentWeek, i)
   );
 
-  // Generate time slots dynamically (1-hour intervals, 12-hour format)
   const timeSlots = Array.from({ length: 8 }, (_, i) => {
-    const hour24 = 9 + i;
+    const hour24 = 9 + i; // 9 AM to 5 PM
     const hour12 = hour24 > 12 ? hour24 - 12 : hour24;
     const period = hour24 >= 12 ? "PM" : "AM";
     return `${hour12}:00 ${period}`;
   });
 
-  // Handle selecting a time slot
   const handleTimeClick = (date, time) => {
+    const [hour, minute] = time
+      .replace(/ (AM|PM)/, "")
+      .split(":")
+      .map(Number);
+    const isPM = time.includes("PM");
+    const hour24 = isPM && hour < 12 ? hour + 12 : hour;
+
+    const [year, month, day] = date.split("-").map(Number);
+    const dateTime = new Date();
+    dateTime.setFullYear(year, month - 1, day);
+    dateTime.setHours(hour24, minute, 0, 0);
+
+    if (isBefore(dateTime, now)) {
+      return;
+    }
+
     setSelectedTime((prev) => ({
       ...prev,
       [date]: prev[date] === time ? null : time,
     }));
+
+    setBookingData((prev) => ({
+      ...prev,
+      selectedDate: format(new Date(date), "MMMM dd, yyyy"),
+      selectedTime: time,
+    }));
   };
 
-  // Navigate to the next set of visible days
   const goToNextWeek = () => {
-    setCurrentWeek(addDays(currentWeek, daysToShow)); // Move forward by the number of visible days
+    setCurrentWeek(addDays(currentWeek, daysToShow));
   };
 
-  // Navigate to the previous set of visible days
   const goToPreviousWeek = () => {
-    const previousWeekStart = addDays(currentWeek, -daysToShow); // Move backward by the number of visible days
+    const previousWeekStart = addDays(currentWeek, -daysToShow);
     if (!isBefore(previousWeekStart, today)) {
       setCurrentWeek(previousWeekStart);
     } else {
-      setCurrentWeek(startOfWeek(today, { weekStartsOn: 0 })); // Reset to current week
+      setCurrentWeek(startOfWeek(today, { weekStartsOn: 0 }));
     }
   };
 
@@ -197,17 +225,41 @@ const StepThree = () => {
             </DateContainer>
 
             <div className="grid grid-cols-1 gap-2 mt-2">
-              {timeSlots.map((time) => (
-                <TimeSlot
-                  key={`${format(date, "yyyy-MM-dd")}-${time}`}
-                  onClick={() =>
-                    handleTimeClick(format(date, "yyyy-MM-dd"), time)
-                  }
-                  isSelected={selectedTime[format(date, "yyyy-MM-dd")] === time}
-                >
-                  {time}
-                </TimeSlot>
-              ))}
+              {timeSlots.map((time) => {
+                const [hour, minute] = time
+                  .replace(/ (AM|PM)/, "")
+                  .split(":")
+                  .map(Number);
+                const isPM = time.includes("PM");
+                const hour24 = isPM && hour < 12 ? hour + 12 : hour;
+
+                const [year, month, day] = format(date, "yyyy-MM-dd")
+                  .split("-")
+                  .map(Number);
+                const dateTime = new Date();
+                dateTime.setFullYear(year, month - 1, day);
+                dateTime.setHours(hour24, minute, 0, 0);
+
+                const isDisabled =
+                  isBefore(new Date(date), today) ||
+                  (format(date, "yyyy-MM-dd") === format(today, "yyyy-MM-dd") &&
+                    isBefore(dateTime, now));
+
+                return (
+                  <TimeSlot
+                    key={`${format(date, "yyyy-MM-dd")}-${time}`}
+                    onClick={() =>
+                      handleTimeClick(format(date, "yyyy-MM-dd"), time)
+                    }
+                    isSelected={
+                      selectedTime[format(date, "yyyy-MM-dd")] === time
+                    }
+                    isDisabled={isDisabled}
+                  >
+                    {time}
+                  </TimeSlot>
+                );
+              })}
             </div>
           </DayContainer>
         ))}

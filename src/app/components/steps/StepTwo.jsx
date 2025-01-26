@@ -3,6 +3,7 @@ import styled from "styled-components";
 import tw from "twin.macro";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock, faPlus, faCheck } from "@fortawesome/free-solid-svg-icons";
+import { useBooking } from "../../hooks/useBooking";
 import WindshieldIcon from "../assets/images/icons/windshield.png";
 import SideGlassIcon from "../assets/images/icons/side_door.png";
 import SunroofIcon from "../assets/images/icons/sunroof.png";
@@ -32,7 +33,9 @@ const CardsContainer = styled.div`
   `}
 `;
 
-const CardWrapper = styled.div`
+const CardWrapper = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "isSelected",
+})`
   ${tw`
     relative
     flex
@@ -67,7 +70,6 @@ const Card = styled.div`
     relative
     w-full
   `}
-  border-radius: 8px; /* Inner border radius */
 `;
 
 const ContentContainer = styled.div`
@@ -138,7 +140,9 @@ const DetailIcon = styled(FontAwesomeIcon)`
   `}
 `;
 
-const AddButton = styled.button`
+const AddButton = styled.button.withConfig({
+  shouldForwardProp: (prop) => prop !== "isSelected",
+})`
   ${tw`
     absolute
     bottom-[-12px]
@@ -158,6 +162,7 @@ const AddButton = styled.button`
 `;
 
 const StepTwo = () => {
+  const { setBookingData } = useBooking();
   const [selectedIndices, setSelectedIndices] = useState([]);
 
   const glassTypes = [
@@ -188,10 +193,26 @@ const StepTwo = () => {
   ];
 
   const handleCardClick = (index) => {
+    const selectedService = glassTypes[index];
     if (selectedIndices.includes(index)) {
-      setSelectedIndices(selectedIndices.filter((i) => i !== index)); // Deselect card
+      // Remove from selected
+      setSelectedIndices(selectedIndices.filter((i) => i !== index));
+      setBookingData((prev) => ({
+        ...prev,
+        service: prev.service.filter(
+          (service) => service.name !== selectedService.title
+        ),
+      }));
     } else {
-      setSelectedIndices([...selectedIndices, index]); // Select card
+      // Add to selected
+      setSelectedIndices([...selectedIndices, index]);
+      setBookingData((prev) => ({
+        ...prev,
+        service: [
+          ...prev.service,
+          { name: selectedService.title, duration: selectedService.time },
+        ],
+      }));
     }
   };
 

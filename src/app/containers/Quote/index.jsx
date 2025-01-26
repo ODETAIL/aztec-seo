@@ -10,6 +10,7 @@ import CarbonBg from "../../components/assets/images/carbon_bg.jpg";
 import WindshieldBg from "../../components/assets/images/chip.jpg";
 import StepTwo from "../../components/steps/StepTwo";
 import StepThree from "../../components/steps/StepThree";
+import StepFour from "../../components/steps/StepFour";
 
 const PageContainer = styled.div`
   ${tw`
@@ -203,6 +204,7 @@ const Quote = () => {
         <h2 className="text-3xl md:text-5xl font-bold text-black leading-5">
           Summary
         </h2>
+        <StepFour />
       </SectionContainer>
       <Marginer direction="vertical" margin="8em" />
       <Footer />

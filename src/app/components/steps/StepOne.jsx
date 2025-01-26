@@ -1,10 +1,11 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import styled from "styled-components";
 import tw from "twin.macro";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
+import { useBooking } from "../../hooks/useBooking";
 import SUV from "../assets/images/cars/suv.png";
 import Truck from "../assets/images/cars/truck.png";
 import Sedan from "../assets/images/cars/sedan.png";
@@ -80,7 +81,7 @@ const SwiperContainer = styled.div`
 
   .swiper-button-next::after,
   .swiper-button-prev::after {
-    font-size: 1.25rem; /* Adjust the size of the arrow icons */
+    font-size: 1.25rem;
   }
 `;
 
@@ -105,7 +106,7 @@ const InputContainer = styled.div`
     md:gap-12
     items-center
   `}
-  margin-top: 1rem; /* Reduce space between car image and inputs */
+  margin-top: 1rem;
 `;
 
 const InputField = styled.input`
@@ -120,9 +121,8 @@ const InputField = styled.input`
     bg-transparent
     text-lg
   `}
-  border-bottom: 2px solid #1194e4; /* Blue bottom border */
-  padding-bottom: 0.5rem; /* Space inside the input */
-  outline: none; /* Remove default focus outline */
+  border-bottom: 2px solid #1194e4;
+  padding-bottom: 0.5rem;
 
   &::placeholder {
     ${tw`
@@ -133,24 +133,32 @@ const InputField = styled.input`
 `;
 
 const StepOne = () => {
+  const { setBookingData } = useBooking();
   const [selectedType, setSelectedType] = useState(0);
   const [carDetails, setCarDetails] = useState(
-    new Array(7).fill({ year: "", make: "", model: "" }) // Initial state for all car types
+    new Array(7).fill({ year: "", make: "", model: "" })
   );
   const swiperRef = useRef(null);
 
-  const carTypes = [
-    { name: "Suv", image: SUV },
-    { name: "Coupe", image: Coupe },
-    { name: "Hatchback", image: Hatchback },
-    { name: "Sedan", image: Sedan },
-    { name: "Truck", image: Truck },
-    { name: "Convertible", image: Convertible },
-    { name: "Minivan", image: Minivan },
-  ];
+  const carTypes = useMemo(
+    () => [
+      { name: "Suv", image: SUV },
+      { name: "Coupe", image: Coupe },
+      { name: "Hatchback", image: Hatchback },
+      { name: "Sedan", image: Sedan },
+      { name: "Truck", image: Truck },
+      { name: "Convertible", image: Convertible },
+      { name: "Minivan", image: Minivan },
+    ],
+    []
+  );
 
   const handleTypeClick = (index) => {
     setSelectedType(index);
+    setBookingData((prev) => ({
+      ...prev,
+      carType: carTypes[index].name, // Update carType in context
+    }));
     if (swiperRef.current) {
       swiperRef.current.slideTo(index);
     }
@@ -160,7 +168,28 @@ const StepOne = () => {
     const updatedDetails = [...carDetails];
     updatedDetails[index] = { ...updatedDetails[index], [field]: value };
     setCarDetails(updatedDetails);
+
+    // Update year, make, and model in context for the selected car type
+    if (index === selectedType) {
+      setBookingData((prev) => ({
+        ...prev,
+        year: updatedDetails[index].year,
+        make: updatedDetails[index].make,
+        model: updatedDetails[index].model,
+      }));
+    }
   };
+
+  // Initialize default car details when the component mounts
+  useEffect(() => {
+    setBookingData((prev) => ({
+      ...prev,
+      carType: carTypes[selectedType].name,
+      year: carDetails[selectedType].year,
+      make: carDetails[selectedType].make,
+      model: carDetails[selectedType].model,
+    }));
+  }, [selectedType, carDetails, carTypes, setBookingData]);
 
   return (
     <StepContainer>
