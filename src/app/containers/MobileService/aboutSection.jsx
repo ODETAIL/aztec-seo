@@ -53,7 +53,7 @@ const InfoContainer = styled.div`
 
 const Title = styled.h1`
   ${tw`
-    text-white
+    text-black
     text-2xl
     md:text-3xl
     font-extrabold
@@ -67,7 +67,7 @@ const InfoText = styled.p`
     md:max-w-xl
     text-sm
     md:text-base
-    text-gray-400
+    text-black
     font-normal
     mt-4
   `};
@@ -75,9 +75,16 @@ const InfoText = styled.p`
 
 const SpanText = styled.span`
   ${tw`
-    font-semibold
-    text-gray-200
+    font-bold
+    text-cBlue
+    cursor-pointer
   `}
+  display: inline-block;
+  transition: transform 0.1s ease-in-out; /* Smooth scaling transition */
+
+  &:hover {
+    transform: scale(0.95); /* Increase size on hover */
+  }
 `;
 
 const AboutSection = () => {

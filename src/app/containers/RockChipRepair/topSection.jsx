@@ -8,7 +8,6 @@ const TopSectionContainer = styled.div`
   margin-top: 2em;
   ${tw`
     w-full
-    max-w-screen-2xl
     flex
     justify-between
   `}
@@ -46,8 +45,11 @@ const HeaderSection = styled.div`
 
 const HeaderText = styled.h1`
   ${tw`
-    text-6xl
-    font-bold
+    text-3xl 
+    md:text-6xl 
+    tracking-wide 
+    font-extrabold 
+    text-white
   `}
 `;
 
@@ -55,7 +57,9 @@ const TopSection = () => {
   return (
     <TopSectionContainer>
       <HeaderSection>
-        <HeaderText>Rock Chip Repair</HeaderText>
+        <HeaderText>
+          Rock Chip <span className="text-cBlue">Repair</span>
+        </HeaderText>
       </HeaderSection>
     </TopSectionContainer>
   );

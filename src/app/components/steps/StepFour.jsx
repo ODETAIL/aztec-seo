@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
 import tw from "twin.macro";
+import emailjs from "@emailjs/browser";
 import { useBooking } from "../../hooks/useBooking";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -138,9 +139,12 @@ const SubmitButton = styled.button`
     text-white
     font-bold
     text-lg
-    transition-all
-    hover:bg-gray-700
   `}
+  transition: transform 0.1s ease-in-out;
+
+  &:hover {
+    transform: scale(0.95);
+  }
 `;
 
 const DetailIcon = styled(FontAwesomeIcon)`
@@ -152,12 +156,51 @@ const DetailIcon = styled(FontAwesomeIcon)`
 `;
 
 const StepFour = () => {
+  const form = useRef();
   const { bookingData } = useBooking();
 
   const totalDuration = bookingData.service
     .map((s) => parseInt(s.duration)) // Convert "90 min" to 90
     .filter((duration) => !isNaN(duration)) // Filter out invalid durations
     .reduce((total, current) => total + current, 0); // Sum up all durations
+
+  const sendEmail = (e) => {
+    e.preventDefault();
+
+    try {
+      const serviceID = process.env.REACT_APP_SERVICE_ID;
+      const templateID = process.env.REACT_APP_TEMPLATE_ID;
+      const userPublicID = process.env.REACT_APP_EMAIL_PUBLIC_KEY;
+      const formData = new FormData(form.current);
+      const formFields = Object.fromEntries(formData.entries());
+
+      const emailParams = {
+        ...formFields,
+        company_name: "Aztec",
+        car_type: bookingData.carType,
+        year: bookingData.year,
+        make: bookingData.make,
+        model: bookingData.model,
+        service: bookingData.service
+          .map(
+            (s) =>
+              `<div style="color: #000000; font-weight: 800; font-size: 1.2rem; line-height: 2.25rem;">
+              ${s.name}
+            </div>`
+          )
+          .join(""), // Join all services into a single string
+        selected_date: bookingData.selectedDate,
+        selected_time: bookingData.selectedTime,
+        estimated_duration: totalDuration > 0 ? `${totalDuration} min` : "-",
+      };
+
+      emailjs.send(serviceID, templateID, emailParams, userPublicID);
+      alert("Quote request has been sent successfully!");
+    } catch (error) {
+      alert("Failed to send email. Please try again.");
+    }
+  };
+
   return (
     <Container>
       {/* Summary Section */}
@@ -209,14 +252,33 @@ const StepFour = () => {
           The request will be sent to us and an associate will get in touch to
           confirm your booking.
         </FormDescription>
-        <Form>
+        <Form ref={form} onSubmit={sendEmail}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Input type="text" placeholder="First Name *" required />
-            <Input type="text" placeholder="Last Name *" />
+            <Input
+              type="text"
+              name="customer_first"
+              placeholder="First Name *"
+              required
+            />
+            <Input type="text" name="customer_last" placeholder="Last Name *" />
           </div>
-          <Input type="email" placeholder="Email *" required />
-          <Input type="tel" placeholder="Phone Number *" required />
-          <TextArea rows="4" placeholder="Additional Information" />
+          <Input
+            type="email"
+            name="customer_email"
+            placeholder="Email *"
+            required
+          />
+          <Input
+            type="tel"
+            name="customer_phone"
+            placeholder="Phone Number *"
+            required
+          />
+          <TextArea
+            rows="4"
+            name="customer_additionalInfo"
+            placeholder="Additional Information"
+          />
           <SubmitButton type="submit">Get Quote</SubmitButton>
         </Form>
       </FormSection>

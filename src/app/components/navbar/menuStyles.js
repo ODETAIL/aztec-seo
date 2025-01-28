@@ -3,8 +3,8 @@ export const menuStyles = {
     position: "absolute",
     width: "20px",
     height: "20px",
-    right: "20px",
-    top: "20px",
+    right: "35px",
+    top: "35px",
   },
   bmBurgerBars: {
     background: "white",

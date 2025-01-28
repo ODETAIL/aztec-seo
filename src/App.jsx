@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import "./App.css";
 import tw from "twin.macro";
@@ -18,58 +18,10 @@ const AppContainer = styled.div`
     flex
     flex-col
     font-montserrat
-    overflow-x-hidden
   `}
-`;
-
-const ScrollToTopButton = styled.button`
-  ${tw`
-    fixed
-    bottom-8
-    right-8
-    md:right-4
-    w-12
-    h-12
-    bg-cBlue
-    text-white
-    text-lg
-    flex
-    items-center
-    justify-center
-    rounded-full
-    shadow-lg
-    hover:bg-blue-700
-    transition-all
-    duration-300
-  `}
-  z-index: 100; /* Ensure it appears above other elements */
 `;
 
 const App = () => {
-  const [showScrollButton, setShowScrollButton] = useState(false);
-
-  // Handle scroll to show or hide the button
-  const handleScroll = () => {
-    if (window.scrollY > 300) {
-      setShowScrollButton(true);
-    } else {
-      setShowScrollButton(false);
-    }
-  };
-
-  // Scroll to the top smoothly
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  // Add scroll event listener
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
   return (
     <AppContainer>
       <BrowserRouter
@@ -102,13 +54,6 @@ const App = () => {
           </Route>
         </Routes>
       </BrowserRouter>
-
-      {/* Back to Top Button */}
-      {showScrollButton && (
-        <ScrollToTopButton onClick={scrollToTop} title="Scroll to top">
-          ↑
-        </ScrollToTopButton>
-      )}
     </AppContainer>
   );
 };

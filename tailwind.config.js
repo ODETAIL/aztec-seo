@@ -9,6 +9,7 @@ module.exports = {
         montserrat: ["Montserrat", "san-serif"],
         oswald: ["Oswald", "san-serif"],
         proximanova: ["Proxima Nova", "san-serif"],
+        merriweather: ["Merriweather", "san-serif"],
       },
       colors: {
         cBlue: {
@@ -18,6 +19,9 @@ module.exports = {
         },
         cGreen: {
           DEFAULT: "#39b972",
+        },
+        cBlack: {
+          DEFAULT: "#1d2124",
         },
       },
     },

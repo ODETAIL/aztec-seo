@@ -9,23 +9,11 @@ const LogoContainer = styled.div`
   `}
 `;
 
-const LogoText = styled.div`
-  ${tw`
-    text-xl
-    md:text-3xl
-    font-black
-    text-white
-    m-1
-  `}
-`;
-
 const Image = styled.div`
-  width: auto;
   ${tw`
-    h-6 
-    md:h-12
-    rounded-full
-    bg-stone-900
+    h-10
+    md:h-20
+    ml-4
   `}
   img {
     width: auto;
@@ -37,9 +25,8 @@ const Logo = () => {
   return (
     <LogoContainer>
       <Image>
-        <img src="/images/aztec_bg.png" alt="Aztec Logo" />
+        <img src="/images/logo_2.png" alt="Aztec Logo" />
       </Image>
-      <LogoText>Aztec Auto Glass</LogoText>
     </LogoContainer>
   );
 };

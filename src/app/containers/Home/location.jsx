@@ -3,12 +3,7 @@ import styled from "styled-components";
 import tw from "twin.macro";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
-import {
-  APIProvider,
-  Map,
-  Marker,
-  ColorScheme,
-} from "@vis.gl/react-google-maps";
+import { APIProvider, Map, AdvancedMarker } from "@vis.gl/react-google-maps";
 
 const SectionContainer = styled.div`
   ${tw`
@@ -120,36 +115,10 @@ const DetailTitle = styled.h3`
   `}
 `;
 
-const blueTheme = [
-  {
-    elementType: "geometry",
-    stylers: [{ color: "#e0f7fa" }],
-  },
-  {
-    elementType: "labels.text.fill",
-    stylers: [{ color: "#333333" }],
-  },
-  {
-    elementType: "labels.text.stroke",
-    stylers: [{ color: "#e0f7fa" }],
-  },
-  {
-    featureType: "road",
-    elementType: "geometry",
-    stylers: [{ color: "#1194e4" }],
-  },
-  {
-    featureType: "water",
-    elementType: "geometry",
-    stylers: [{ color: "#b3e5fc" }],
-  },
-];
-
 const Location = () => {
   const mapStyles = {
     height: "100%",
     width: "100%",
-    colorScheme: ColorScheme.DARK,
   };
 
   const location = {
@@ -163,12 +132,12 @@ const Location = () => {
         <MapContainer>
           <APIProvider apiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
             <Map
+              mapId={process.env.REACT_APP_MAP_ID}
               style={mapStyles}
               defaultZoom={18}
               defaultCenter={location}
-              options={{ styles: blueTheme }}
             >
-              <Marker position={location} />
+              <AdvancedMarker position={location} />
             </Map>
           </APIProvider>
         </MapContainer>

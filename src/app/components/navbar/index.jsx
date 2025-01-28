@@ -3,22 +3,24 @@ import styled from "styled-components";
 import tw from "twin.macro";
 import Logo from "../logo";
 import NavItems from "./navItems";
+import useScroll from "../../hooks/useScroll";
 
 const NavBarContainer = styled.div`
   min-height: 68px;
-  background-color: rgba(0, 0, 0, 0.75);
+  background-color: ${({ $isScrolled }) =>
+    $isScrolled ? "rgba(0, 0, 0, 0.75)" : "#1d2124"};
+  transition: background-color 0.3s ease-in-out, position 0.1s ease-in-out;
   ${tw`
     w-full
     flex
     flex-row
-    md:flex-wrap
     items-center
     py-6
-    px-4
-    lg:px-12
+    px-6
+    lg:px-20
     justify-between
   `}
-  position: fixed;
+  position: ${({ $isScrolled }) => ($isScrolled ? "fixed" : "absolute")};
   top: 0;
   left: 0;
   right: 0;
@@ -26,11 +28,18 @@ const NavBarContainer = styled.div`
   box-sizing: border-box;
 `;
 
-const LogoContainer = styled.div``;
+const LogoContainer = styled.div`
+  ${tw`
+    flex
+    items-center
+  `}
+`;
 
 const NavBar = () => {
+  const isScrolled = useScroll(5);
+
   return (
-    <NavBarContainer>
+    <NavBarContainer $isScrolled={isScrolled}>
       <LogoContainer>
         <Logo />
       </LogoContainer>

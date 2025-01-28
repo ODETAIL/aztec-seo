@@ -58,7 +58,7 @@ const InfoText = styled.p`
     md:max-w-xl
     text-sm
     md:text-base
-    text-gray-400
+    text-black
     font-normal
     mt-4
   `};
@@ -66,8 +66,8 @@ const InfoText = styled.p`
 
 const PriceText = styled.span`
   ${tw`
-    font-semibold
-    text-gray-200
+    font-bold
+    text-cBlue
   `}
 `;
 

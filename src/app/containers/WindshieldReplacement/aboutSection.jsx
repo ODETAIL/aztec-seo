@@ -53,7 +53,7 @@ const InfoContainer = styled.div`
 
 const Title = styled.h1`
   ${tw`
-    text-white
+    text-black
     text-2xl
     md:text-3xl
     font-extrabold
@@ -67,10 +67,24 @@ const InfoText = styled.p`
     md:max-w-xl
     text-sm
     md:text-base
-    text-gray-400
+    text-black
     font-normal
     mt-4
   `};
+`;
+
+const SpanText = styled.span`
+  ${tw`
+    font-bold
+    text-cBlue
+    cursor-pointer
+  `}
+  display: inline-block;
+  transition: transform 0.1s ease-in-out; /* Smooth scaling transition */
+
+  &:hover {
+    transform: scale(0.95); /* Increase size on hover */
+  }
 `;
 
 const AboutSection = () => {
@@ -82,10 +96,10 @@ const AboutSection = () => {
           Our in-shop windshield replacement service offers everything you'd
           expect from a top-notch auto glass provider, plus an exclusive
           benefit. When you choose to have your windshield replaced at our shop,
-          you'll receive 6 months of free unlimited rock chip repair with any
-          replacement. Enjoy the peace of mind that comes with knowing your
-          windshield is protected long after the initial service. Visit us today
-          for expert care and added value!
+          you'll receive <SpanText>6 months free</SpanText> unlimited rock chip
+          repair with any replacement. Enjoy the peace of mind that comes with
+          knowing your windshield is protected long after the initial service.
+          Visit us today for expert care and added value!
         </InfoText>
       </InfoContainer>
       <CarContainer>

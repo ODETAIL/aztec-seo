@@ -1,18 +1,17 @@
-import React, { useState, useRef, useEffect, useMemo } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
+import Select from "react-select";
+
 import tw from "twin.macro";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
+import { bouncy } from "ldrs";
 import { Navigation } from "swiper/modules";
 import { useBooking } from "../../hooks/useBooking";
-import SUV from "../assets/images/cars/suv.png";
-import Truck from "../assets/images/cars/truck.png";
-import Sedan from "../assets/images/cars/sedan.png";
-import Minivan from "../assets/images/cars/minivan.png";
-import Convertible from "../assets/images/cars/convertible.png";
-import Hatchback from "../assets/images/cars/hatchback.png";
-import Coupe from "../assets/images/cars/coupe.png";
+import { CarTypes } from "../../utils/constants";
+
+bouncy.register();
 
 const StepContainer = styled.div`
   ${tw`
@@ -45,9 +44,15 @@ const CarTypeButton = styled.button`
     duration-300
     font-semibold
   `}
+  display: inline-block;
+  transition: transform 0.1s ease-in-out;
 
-  ${({ selected }) =>
-    selected
+  &:hover {
+    transform: scale(0.9);
+  }
+
+  ${({ $selected }) =>
+    $selected
       ? `
         background-color: rgba(0, 0, 0, 0.75); 
         color: #1194e4; 
@@ -62,6 +67,7 @@ const SwiperContainer = styled.div`
     flex
     items-center
     justify-center
+    mt-6
   `}
 
   .swiper-button-next,
@@ -77,6 +83,11 @@ const SwiperContainer = styled.div`
     justify-content: center;
     z-index: 10;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.1s ease-in-out;
+
+    &:hover {
+      transform: scale(0.95);
+    }
   }
 
   .swiper-button-next::after,
@@ -109,96 +120,170 @@ const InputContainer = styled.div`
   margin-top: 1rem;
 `;
 
-const InputField = styled.input`
-  ${tw`
-    w-56
-    md:w-64
-    text-center
-    text-white
-    border-0
-    focus:outline-none
-    focus:ring-0
-    bg-transparent
-    text-lg
-  `}
-  border-bottom: 2px solid #1194e4;
-  padding-bottom: 0.5rem;
-
-  &::placeholder {
-    ${tw`
-      text-sm
-      text-gray-400
-    `}
-  }
-`;
+const reactSelectStyles = {
+  control: (base, state) => ({
+    ...base,
+    backgroundColor: "#1194e4",
+    opacity: state.isDisabled ? 0.5 : 0.8,
+    border: "1px solid #1194e4",
+    borderBottom: state.isDisabled ? "1px solid #1194e4" : "2px solid #fff",
+    borderRadius: "0.5rem",
+    boxShadow: "none",
+    padding: "0.25rem",
+    fontSize: "1rem",
+    fontWeight: 500,
+    width: "14rem",
+    cursor: "pointer",
+    color: "#fff",
+    ":hover": {
+      borderColor: "#1194e4",
+    },
+  }),
+  option: (base, state) => ({
+    ...base,
+    backgroundColor: state.isSelected ? "#1194e4" : "#ffffff",
+    color: state.isSelected ? "#ffffff" : "#000",
+    ":hover": {
+      backgroundColor: "#f1f1f1",
+    },
+    cursor: "pointer",
+  }),
+  menu: (base) => ({
+    ...base,
+    borderRadius: "0.5rem",
+    overflow: "hidden",
+  }),
+  singleValue: (base) => ({
+    ...base,
+    color: "#fff",
+  }),
+  placeholder: (base) => ({
+    ...base,
+    color: "#fff",
+    fontWeight: 500,
+  }),
+};
 
 const StepOne = () => {
   const { setBookingData } = useBooking();
   const [selectedType, setSelectedType] = useState(0);
-  const [carDetails, setCarDetails] = useState(
-    new Array(7).fill({ year: "", make: "", model: "" })
-  );
+  const [makes, setMakes] = useState([]);
+  const [models, setModels] = useState([]);
+  const [selectedYear, setSelectedYear] = useState("");
+  const [selectedMake, setSelectedMake] = useState("");
+  const [selectedModel, setSelectedModel] = useState("");
+  const [loading, setLoading] = useState(false);
   const swiperRef = useRef(null);
 
-  const carTypes = useMemo(
-    () => [
-      { name: "Suv", image: SUV },
-      { name: "Coupe", image: Coupe },
-      { name: "Hatchback", image: Hatchback },
-      { name: "Sedan", image: Sedan },
-      { name: "Truck", image: Truck },
-      { name: "Convertible", image: Convertible },
-      { name: "Minivan", image: Minivan },
-    ],
-    []
-  );
+  const fetchMakes = async (vehicleType) => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `https://vpic.nhtsa.dot.gov/api/vehicles/GetMakesForVehicleType/${vehicleType}?format=json`
+      );
+      const data = await response.json();
 
-  const handleTypeClick = (index) => {
+      // Remove duplicates using a Set
+      const uniqueMakes = Array.from(
+        new Set(data.Results.map((make) => make.MakeName.trim()))
+      );
+
+      setMakes(uniqueMakes);
+    } catch (error) {
+      console.error("Error fetching makes:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchModels = async (make, year, vehicleType) => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeYear/make/${make}/modelyear/${year}/vehicletype/${vehicleType}?format=json`
+      );
+      const data = await response.json();
+      const uniqueModels = Array.from(
+        new Set(data.Results.map((model) => model.Model_Name))
+      );
+      setModels(uniqueModels);
+    } catch (error) {
+      console.error("Error fetching models:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleTypeChange = (index) => {
     setSelectedType(index);
+    const selectedCarType = CarTypes[index].name;
+    const qCarType = CarTypes[index].qName;
+
+    // Reset dependent states
+    setSelectedYear("");
+    setSelectedMake("");
+    setSelectedModel("");
+    setMakes([]);
+    setModels([]);
+    // setYears([]);
+
+    // Update booking data and fetch makes
     setBookingData((prev) => ({
       ...prev,
-      carType: carTypes[index].name, // Update carType in context
+      carType: selectedCarType,
+      year: "",
+      make: "",
+      model: "",
     }));
-    if (swiperRef.current) {
-      swiperRef.current.slideTo(index);
-    }
+    fetchMakes(qCarType);
   };
 
-  const handleInputChange = (index, field, value) => {
-    const updatedDetails = [...carDetails];
-    updatedDetails[index] = { ...updatedDetails[index], [field]: value };
-    setCarDetails(updatedDetails);
-
-    // Update year, make, and model in context for the selected car type
-    if (index === selectedType) {
-      setBookingData((prev) => ({
-        ...prev,
-        year: updatedDetails[index].year,
-        make: updatedDetails[index].make,
-        model: updatedDetails[index].model,
-      }));
-    }
+  const handleYearChange = (selectedOption) => {
+    const year = selectedOption?.value || "";
+    setSelectedYear(year);
+    setSelectedMake("");
+    setSelectedModel("");
+    setModels([]);
+    setBookingData((prev) => ({ ...prev, year }));
   };
 
-  // Initialize default car details when the component mounts
+  const handleMakeChange = async (selectedOption) => {
+    const make = selectedOption?.value || "";
+    setSelectedMake(make);
+    setSelectedModel("");
+    fetchModels(make, selectedYear, CarTypes[selectedType].qName);
+    setBookingData((prev) => ({ ...prev, make }));
+  };
+
+  const handleModelChange = (selectedOption) => {
+    const model = selectedOption?.value || "";
+    setSelectedModel(model);
+    setBookingData((prev) => ({ ...prev, model }));
+  };
+
   useEffect(() => {
+    // Fetch makes for the default car type on initial load
+    fetchMakes(CarTypes[selectedType].qName);
     setBookingData((prev) => ({
       ...prev,
-      carType: carTypes[selectedType].name,
-      year: carDetails[selectedType].year,
-      make: carDetails[selectedType].make,
-      model: carDetails[selectedType].model,
+      carType: CarTypes[selectedType].name,
+      year: "",
+      make: "",
+      model: "",
     }));
-  }, [selectedType, carDetails, carTypes, setBookingData]);
+  }, [selectedType, setBookingData]);
 
   return (
     <StepContainer>
       <CarTypesContainer>
-        {carTypes.map((car, index) => (
+        {CarTypes.map((car, index) => (
           <CarTypeButton
             key={index}
-            selected={index === selectedType}
-            onClick={() => handleTypeClick(index)}
+            $selected={index === selectedType}
+            onClick={() => {
+              handleTypeChange(index);
+              if (swiperRef.current) swiperRef.current.slideTo(index);
+            }}
           >
             {car.name}
           </CarTypeButton>
@@ -211,8 +296,9 @@ const StepOne = () => {
           navigation={true}
           modules={[Navigation]}
           onSwiper={(swiper) => (swiperRef.current = swiper)}
+          onSlideChange={(swiper) => handleTypeChange(swiper.activeIndex)} // Update car type on slide change
         >
-          {carTypes.map((car, index) => (
+          {CarTypes.map((car, index) => (
             <SwiperSlide
               key={index}
               style={{
@@ -223,36 +309,53 @@ const StepOne = () => {
               }}
             >
               <CarImage src={car.image} alt={car.name} />
-              <InputContainer>
-                <InputField
-                  type="text"
-                  placeholder="Year"
-                  value={carDetails[index].year}
-                  onChange={(e) =>
-                    handleInputChange(index, "year", e.target.value)
-                  }
-                />
-                <InputField
-                  type="text"
-                  placeholder="Make"
-                  value={carDetails[index].make}
-                  onChange={(e) =>
-                    handleInputChange(index, "make", e.target.value)
-                  }
-                />
-                <InputField
-                  type="text"
-                  placeholder="Model"
-                  value={carDetails[index].model}
-                  onChange={(e) =>
-                    handleInputChange(index, "model", e.target.value)
-                  }
-                />
-              </InputContainer>
             </SwiperSlide>
           ))}
         </Swiper>
       </SwiperContainer>
+      {loading ? (
+        <l-bouncy size="55" color="#1194e4" speed="1.75" />
+      ) : (
+        <InputContainer>
+          <Select
+            value={
+              selectedYear ? { value: selectedYear, label: selectedYear } : null
+            }
+            onChange={handleYearChange}
+            options={Array.from({ length: 25 }, (_, i) => {
+              const year = 2023 - i;
+              return { value: year, label: year };
+            })}
+            placeholder="Select Year"
+            styles={reactSelectStyles}
+            isClearable
+          />
+          <Select
+            value={
+              selectedMake ? { value: selectedMake, label: selectedMake } : null
+            }
+            onChange={handleMakeChange}
+            options={makes.map((make) => ({ value: make, label: make }))}
+            placeholder="Select Make"
+            styles={reactSelectStyles}
+            isClearable
+            isDisabled={!selectedYear}
+          />
+          <Select
+            value={
+              selectedModel
+                ? { value: selectedModel, label: selectedModel }
+                : null
+            }
+            onChange={handleModelChange}
+            options={models.map((model) => ({ value: model, label: model }))}
+            placeholder="Select Model"
+            styles={reactSelectStyles}
+            isClearable
+            isDisabled={!selectedMake}
+          />
+        </InputContainer>
+      )}
     </StepContainer>
   );
 };

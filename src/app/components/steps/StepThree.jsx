@@ -22,8 +22,8 @@ const Header = styled.div`
     flex
     justify-between
     items-center
-    px-6
-    py-6
+    px-10
+    py-8
     bg-cBlue
     text-white
     rounded-t-lg
@@ -38,9 +38,7 @@ const Title = styled.h2`
   `}
 `;
 
-const WeekRow = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "daysToShow",
-})`
+const WeekRow = styled.div`
   ${tw`
     w-full
     grid
@@ -53,7 +51,7 @@ const WeekRow = styled.div.withConfig({
     border-cBlue
     gap-4
   `}
-  grid-template-columns: repeat(${({ daysToShow }) => daysToShow}, 1fr);
+  grid-template-columns: repeat(${({ $daysToShow }) => $daysToShow}, 1fr);
 `;
 
 const DayContainer = styled.div`
@@ -85,9 +83,7 @@ const WeekText = styled.div`
   `}
 `;
 
-const TimeSlot = styled.button.withConfig({
-  shouldForwardProp: (prop) => !["isSelected", "isDisabled"].includes(prop),
-})`
+const TimeSlot = styled.button`
   ${tw`
     text-sm
     text-black
@@ -101,11 +97,16 @@ const TimeSlot = styled.button.withConfig({
     transition-all
     duration-200
   `}
-  background-color: ${({ isSelected, isDisabled }) =>
-    isDisabled ? "#e0e0e0" : isSelected ? "#39b972" : "#f1f1f1"};
-  color: ${({ isSelected, isDisabled }) =>
-    isDisabled ? "#a0a0a0" : isSelected ? "#ffffff" : "#000000"};
-  cursor: ${({ isDisabled }) => (isDisabled ? "not-allowed" : "pointer")};
+  background-color: ${({ $isSelected, $isDisabled }) =>
+    $isDisabled ? "#e0e0e0" : $isSelected ? "#39b972" : "#f1f1f1"};
+  color: ${({ $isSelected, $isDisabled }) =>
+    $isDisabled ? "#a0a0a0" : $isSelected ? "#ffffff" : "#000000"};
+  cursor: ${({ $isDisabled }) => ($isDisabled ? "not-allowed" : "pointer")};
+  transition: transform 0.1s ease-in-out;
+
+  &:hover {
+    transform: scale(1.05);
+  }
 `;
 
 const FooterText = styled.div`
@@ -117,13 +118,26 @@ const FooterText = styled.div`
   `}
 `;
 
-const DateContainer = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "isToday",
-})`
+const DateContainer = styled.div`
   ${tw`
     mb-4
   `}
-  border-bottom: ${({ isToday }) => (isToday ? "2px solid #1194e4" : "none")};
+  border-bottom: ${({ $isToday }) => ($isToday ? "2px solid #1194e4" : "none")};
+`;
+
+const WeekButton = styled.button`
+  ${tw`
+    font-bold
+    border-2
+    rounded-full
+    p-2
+    px-4
+  `}
+  transition: transform 0.1s ease-in-out;
+
+  &:hover {
+    transform: scale(0.95);
+  }
 `;
 
 const StepThree = () => {
@@ -207,16 +221,16 @@ const StepThree = () => {
   return (
     <CalendarContainer>
       <Header>
-        <button onClick={goToPreviousWeek}>&lt;</button>
+        <WeekButton onClick={goToPreviousWeek}>&lt;</WeekButton>
         <Title>{format(currentWeek, "MMMM yyyy")}</Title>
-        <button onClick={goToNextWeek}>&gt;</button>
+        <WeekButton onClick={goToNextWeek}>&gt;</WeekButton>
       </Header>
 
-      <WeekRow daysToShow={daysToShow}>
+      <WeekRow $daysToShow={daysToShow}>
         {daysOfWeek.map((date) => (
           <DayContainer key={format(date, "yyyy-MM-dd")}>
             <DateContainer
-              isToday={
+              $isToday={
                 format(date, "yyyy-MM-dd") === format(today, "yyyy-MM-dd")
               }
             >
@@ -251,10 +265,10 @@ const StepThree = () => {
                     onClick={() =>
                       handleTimeClick(format(date, "yyyy-MM-dd"), time)
                     }
-                    isSelected={
+                    $isSelected={
                       selectedTime[format(date, "yyyy-MM-dd")] === time
                     }
-                    isDisabled={isDisabled}
+                    $isDisabled={isDisabled}
                   >
                     {time}
                   </TimeSlot>
@@ -266,7 +280,8 @@ const StepThree = () => {
       </WeekRow>
 
       <FooterText>
-        * Reservation times are approximate and may vary within 60 minutes.
+        <span className="text-red-600 font-bold">*</span> Reservation times are
+        approximate and may vary within 60 minutes.
       </FooterText>
     </CalendarContainer>
   );

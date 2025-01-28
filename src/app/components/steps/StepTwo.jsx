@@ -4,10 +4,7 @@ import tw from "twin.macro";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock, faPlus, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { useBooking } from "../../hooks/useBooking";
-import WindshieldIcon from "../assets/images/icons/windshield.png";
-import SideGlassIcon from "../assets/images/icons/side_door.png";
-import SunroofIcon from "../assets/images/icons/sunroof.png";
-import RearWindshieldIcon from "../assets/images/icons/rear.png";
+import { GlassTypes } from "../../utils/constants";
 
 const StepContainer = styled.div`
   ${tw`
@@ -33,9 +30,7 @@ const CardsContainer = styled.div`
   `}
 `;
 
-const CardWrapper = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "isSelected",
-})`
+const CardWrapper = styled.div`
   ${tw`
     relative
     flex
@@ -45,13 +40,13 @@ const CardWrapper = styled.div.withConfig({
     transition-all
     duration-300
   `}
-  background: ${({ isSelected }) =>
-    isSelected ? "linear-gradient(45deg, #32cd32, #00ff00)" : "transparent"};
+  background: ${({ $isSelected }) =>
+    $isSelected ? "linear-gradient(45deg, #32cd32, #00ff00)" : "transparent"};
   padding: 4px;
 
   &:hover {
-    background: ${({ isSelected }) =>
-      isSelected
+    background: ${({ $isSelected }) =>
+      $isSelected
         ? "linear-gradient(45deg, #32cd32, #00ff00)"
         : "linear-gradient(45deg, #1194e4, #1e90ff)"};
     border-radius: 10px;
@@ -140,9 +135,7 @@ const DetailIcon = styled(FontAwesomeIcon)`
   `}
 `;
 
-const AddButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "isSelected",
-})`
+const AddButton = styled.button`
   ${tw`
     absolute
     bottom-[-12px]
@@ -158,42 +151,15 @@ const AddButton = styled.button.withConfig({
     shadow-lg
     transition-all
   `}
-  background: ${({ isSelected }) => (isSelected ? "#39b972" : "#1194e4")};
+  background: ${({ $isSelected }) => ($isSelected ? "#39b972" : "#1194e4")};
 `;
 
 const StepTwo = () => {
   const { setBookingData } = useBooking();
   const [selectedIndices, setSelectedIndices] = useState([]);
 
-  const glassTypes = [
-    {
-      title: "Windshield",
-      description: "Premium glass with optimal safety standards.",
-      time: "90 min",
-      icon: WindshieldIcon,
-    },
-    {
-      title: "Side Glass",
-      description: "Enhanced durability and thermal protection.",
-      time: "60 min",
-      icon: SideGlassIcon,
-    },
-    {
-      title: "Back Glass",
-      description: "Technology integrated for safety and convenience.",
-      time: "120 min",
-      icon: RearWindshieldIcon,
-    },
-    {
-      title: "Sunroof",
-      description: "Enhanced protection with advanced design.",
-      time: "120 min",
-      icon: SunroofIcon,
-    },
-  ];
-
   const handleCardClick = (index) => {
-    const selectedService = glassTypes[index];
+    const selectedService = GlassTypes[index];
     if (selectedIndices.includes(index)) {
       // Remove from selected
       setSelectedIndices(selectedIndices.filter((i) => i !== index));
@@ -219,10 +185,10 @@ const StepTwo = () => {
   return (
     <StepContainer>
       <CardsContainer>
-        {glassTypes.map((glass, index) => (
+        {GlassTypes.map((glass, index) => (
           <CardWrapper
             key={index}
-            isSelected={selectedIndices.includes(index)}
+            $isSelected={selectedIndices.includes(index)}
             onClick={() => handleCardClick(index)}
           >
             <Card>
@@ -246,7 +212,7 @@ const StepTwo = () => {
                   </DetailsContainer>
                 </InfoContainer>
               </ContentContainer>
-              <AddButton isSelected={selectedIndices.includes(index)}>
+              <AddButton $isSelected={selectedIndices.includes(index)}>
                 <FontAwesomeIcon
                   icon={selectedIndices.includes(index) ? faCheck : faPlus}
                 />

@@ -1,149 +1,106 @@
 import React from "react";
 import styled from "styled-components";
 import tw from "twin.macro";
-
-import PorcheImg from "../../components/assets/images/porche.png";
-import BlobImg from "../../components/assets/images/blob.svg";
-import { SCREENS } from "../../components/responsive";
 import Button from "../../components/button";
+import LandingVideo from "../../components/assets/images/landing_2.mov";
 
 const TopSectionContainer = styled.div`
-  min-height: 400px;
-  margin-top: 6em;
   ${tw`
     w-full
-    max-w-screen-2xl
     flex
     justify-between
-    lg:pl-12
-    lg:pr-12
-    pl-3
-    pr-3
   `}
 `;
 
-const LeftContainer = styled.div`
+const HeaderSection = styled.div`
   ${tw`
-    w-1/2
-    flex
-    flex-col
-  `}
-`;
-
-const RightContainer = styled.div`
-  ${tw`
-    w-1/2
-    flex
-    flex-col
     relative
-    mt-20
+    flex
+    flex-col
+    w-full
+    items-center
+    justify-center
+    min-h-screen
+    px-6
   `}
+
+  &::before {
+    content: "";
+    ${tw`
+      absolute
+      top-0
+      left-0
+      w-full
+      h-full
+    `}
+    background-color: rgba(0, 0, 0, 0.75); /* Overlay for text readability */
+    z-index: 2;
+  }
+
+  > * {
+    z-index: 2; /* Ensures text and buttons are above the overlay */
+    ${tw`
+      text-center
+    `}
+  }
+`;
+
+const VideoBackground = styled.video`
+  ${tw`
+    absolute
+    top-0
+    left-0
+    w-full
+    h-full
+  `}
+  object-fit: cover; /* Ensures the video covers the container without distortion */
+  z-index: 1; /* Places the video behind all other elements */
 `;
 
 const Slogan = styled.h1`
   ${tw`
     font-black
-    text-2xl
-    xl:text-6xl
-    sm:text-3xl
+    text-3xl
+    xl:text-8xl
     md:text-5xl
-    text-black
-    mb-4
-    sm:leading-snug
-    lg:leading-normal
-    xl:leading-relaxed
+    text-white
+    sm:leading-tight
+    lg:leading-snug
+    xl:leading-normal
+  `}
+`;
+
+const SubSlogan = styled.h2`
+  ${tw`
+    text-2xl 
+    md:text-7xl 
+    tracking-wide 
+    font-extrabold 
+    text-cBlue
+    mb-8
   `}
 `;
 
 const Description = styled.p`
   ${tw`
-    text-xs
-    lg:text-sm
+    text-sm
     xl:text-lg
-    sm:max-h-full
-    overflow-hidden
-    max-h-12
-    text-gray-700
+    text-gray-200
+    font-normal
+    md:mt-4
+    max-w-xl
   `}
-`;
-
-const BlobContainer = styled.div`
-  width: 25em;
-  height: 5em;
-  position: absolute;
-  right: -5em;
-  top: -10em;
-  z-index: 1;
-  transform: rotate(-30deg);
-
-  img {
-    width: 100%;
-    height: auto;
-    max-height: max-content;
-  }
-
-  @media (min-width: ${SCREENS.sm}) {
-    width: 40em;
-    max-height: 10em;
-    right: -9em;
-    top: -16em;
-    transform: rotate(-25deg);
-  }
-
-  @media (min-width: ${SCREENS.lg}) {
-    width: 50em;
-    max-height: 30em;
-    right: -7em;
-    top: -15em;
-    transform: rotate(-30deg);
-  }
-
-  @media (min-width: ${SCREENS.xl}) {
-    width: 70em;
-    max-height: 30em;
-    right: -15em;
-    top: -25em;
-    transform: rotate(-20deg);
-  }
-`;
-
-const StandaloneCar = styled.div`
-  width: auto;
-  height: 7em;
-  right: -4em;
-  top: -3em;
-  position: absolute;
-  z-index: 1;
-
-  img {
-    width: auto;
-    height: 100%;
-    max-width: fit-content;
-  }
-
-  @media (min-width: ${SCREENS.sm}) {
-    height: 8em;
-    right: -6em;
-    top: -6em;
-  }
-
-  @media (min-width: ${SCREENS.lg}) {
-    height: 15em;
-    right: -9em;
-    top: -4em;
-  }
-
-  @media (min-width: ${SCREENS.xl}) {
-    height: 19em;
-    right: -5em;
-    top: -4em;
-  }
 `;
 
 const ButtonsContainer = styled.div`
   ${tw`
     flex
-    mt-4
+    items-center
+    justify-center
+    md:space-x-6
+    gap-2
+    md:gap-0
+    mt-8
     flex-wrap
   `}
 `;
@@ -151,25 +108,21 @@ const ButtonsContainer = styled.div`
 const TopSection = () => {
   return (
     <TopSectionContainer>
-      <LeftContainer>
-        <Slogan>Same-Day Autoglass Replacements</Slogan>
+      <HeaderSection>
+        {/* Video Background */}
+        <VideoBackground src={LandingVideo} autoPlay loop muted playsInline />
+        {/* Content */}
+        <Slogan>Same-Day Autoglass </Slogan>
+        <SubSlogan>Replacements</SubSlogan>
         <Description>
           Get in touch today for a free, no-obligation quote and let us handle
           your auto glass needs with ease and professionalism.
         </Description>
         <ButtonsContainer>
           <Button theme="filled" text="Get Free Quote" />
-          <Button theme="outlined" text="Call Us Now" />
+          <Button theme="outlined" text="Call Us Now" phone="+15879667636" />
         </ButtonsContainer>
-      </LeftContainer>
-      <RightContainer>
-        <BlobContainer>
-          <img src={BlobImg} alt="" />
-        </BlobContainer>
-        <StandaloneCar>
-          <img src={PorcheImg} alt="" />
-        </StandaloneCar>
-      </RightContainer>
+      </HeaderSection>
     </TopSectionContainer>
   );
 };

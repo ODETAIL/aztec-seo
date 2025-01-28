@@ -45,30 +45,6 @@ export const CopyrightText = styled.small`
   `}
 `;
 
-// const AboutContainer = styled.div`
-//   ${tw`
-//     flex
-//     flex-col
-//     mr-2
-//     md:mr-16
-//     pl-10
-//     pr-10
-//     md:pl-3
-//     md:pr-3
-//   `};
-// `;
-
-// const AboutText = styled.p`
-//   ${tw`
-//     text-white
-//     text-sm
-//     font-normal
-//     max-w-xs
-//     leading-5
-//     mt-2
-//   `};
-// `;
-
 export const SectionContainer = styled.div`
   ${tw`
     w-full
@@ -77,10 +53,8 @@ export const SectionContainer = styled.div`
     flex-col
     mr-2
     md:mr-16
-    pl-10
-    pr-10
-    md:pl-3
-    md:pr-3
+    px-10
+    md:px-3
     mt-7
     md:mt-0
   `};
@@ -97,7 +71,8 @@ export const LinksList = styled.ul`
 
 export const ListItem = styled.li`
   ${tw`
-    mb-3
+    mb-1
+    md:mb-3
   `};
 
   & > a {
@@ -144,7 +119,8 @@ export const TimeColumn = styled.span`
 
 export const HeaderTitle = styled.h3`
   ${tw`
-    text-2xl
+    text-xl
+    md:text-2xl
     font-bold
     text-white
     mb-3
@@ -160,15 +136,18 @@ export const HorizontalContainer = styled.div`
 
 export const BlueIcon = styled.span`
   ${tw`
-    w-8
-    h-8
+    w-6
+    h-6
+    md:w-8
+    md:h-8
     rounded-full
     bg-cBlue
     flex
     items-center
     justify-center
     text-white
-    text-base
+    text-xs
+    md:text-base
     mr-2
     mb-3
   `};

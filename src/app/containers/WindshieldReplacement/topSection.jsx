@@ -8,7 +8,6 @@ const TopSectionContainer = styled.div`
   margin-top: 2em;
   ${tw`
     w-full
-    max-w-screen-2xl
     flex
     justify-between
   `}
@@ -46,8 +45,18 @@ const HeaderSection = styled.div`
 
 const HeaderText = styled.h1`
   ${tw`
-    text-6xl
-    font-bold
+    text-4xl 
+    md:text-6xl 
+    tracking-wide 
+    font-extrabold 
+    text-white
+    px-6
+    flex 
+    flex-col
+    md:flex-row
+    justify-center
+    items-center
+    md:gap-4
   `}
 `;
 
@@ -55,7 +64,9 @@ const TopSection = () => {
   return (
     <TopSectionContainer>
       <HeaderSection>
-        <HeaderText>Windshield Replacement</HeaderText>
+        <HeaderText>
+          Windshield <span className="text-cBlue">Replacement</span>
+        </HeaderText>
       </HeaderSection>
     </TopSectionContainer>
   );

@@ -173,6 +173,7 @@ const Quote = () => {
   return (
     <PageContainer>
       <NavBar />
+      <Marginer direction="vertical" margin="4em" />
       <SectionLandingContainer>
         <h2 className="text-3xl md:text-9xl tracking-wide font-extrabold text-cBlue mb-4">
           Auto Glass Repair

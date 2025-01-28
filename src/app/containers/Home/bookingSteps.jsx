@@ -47,7 +47,6 @@ const StepContainer = styled.div`
     md:w-96
     items-center
     transition-colors
-    hover:text-cBlue
     m-3
   `}
 `;
@@ -60,8 +59,12 @@ const Step = styled.div`
     items-center
     justify-center
     p-6
-
   `}
+  transition: transform 0.1s ease-in-out;
+
+  &:hover {
+    transform: scale(1.1);
+  }
 `;
 
 const StepTitle = styled.h4`

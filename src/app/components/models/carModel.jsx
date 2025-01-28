@@ -55,7 +55,7 @@ const CarModelCanvas = ({
           />
         </AccumulativeShadows>
         <OrbitControls
-          enableZoom={true} // Enable zoom functionality
+          enableZoom={false} // Enable zoom functionality
         />
         <Suspense fallback={<Loader />}>
           {/* Model */}

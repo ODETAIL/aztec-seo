@@ -171,6 +171,12 @@ const ActionButton = styled.button`
     duration-300
   `}
   width: 100%;
+  display: inline-block;
+  transition: transform 0.1s ease-in-out;
+
+  &:hover {
+    transform: scale(0.95);
+  }
 `;
 
 const AboutUs = () => {

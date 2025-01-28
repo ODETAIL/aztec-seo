@@ -63,9 +63,6 @@ export function Footer() {
             <styles.ListItem>
               <Link to="/privacy-policy">Privacy Policy</Link>
             </styles.ListItem>
-            <styles.ListItem>
-              <Link to="/terms-and-conditions">Terms &amp; Conditions</Link>
-            </styles.ListItem>
           </styles.LinksList>
         </styles.SectionContainer>
         <styles.SectionContainer>
