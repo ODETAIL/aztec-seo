@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import tw from "twin.macro";
 import emailjs from "@emailjs/browser";
@@ -12,6 +12,7 @@ import {
   faWrench,
   faClockRotateLeft,
 } from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-toastify";
 
 const Container = styled.div`
   ${tw`
@@ -140,11 +141,16 @@ const SubmitButton = styled.button`
     font-bold
     text-lg
   `}
-  transition: transform 0.1s ease-in-out;
+  ${({ $isComplete }) =>
+    $isComplete
+      ? `
+        transition: transform 0.1s ease-in-out;
 
-  &:hover {
-    transform: scale(0.95);
-  }
+        &:hover {
+          transform: scale(0.95);
+        }
+      `
+      : tw`bg-gray-700 text-gray-500`}
 `;
 
 const DetailIcon = styled(FontAwesomeIcon)`
@@ -158,47 +164,83 @@ const DetailIcon = styled(FontAwesomeIcon)`
 const StepFour = () => {
   const form = useRef();
   const { bookingData } = useBooking();
+  const [isReady, setIsReady] = useState(false);
 
   const totalDuration = bookingData.service
     .map((s) => parseInt(s.duration)) // Convert "90 min" to 90
     .filter((duration) => !isNaN(duration)) // Filter out invalid durations
     .reduce((total, current) => total + current, 0); // Sum up all durations
 
+  const WithAvatar = () => {
+    return (
+      <div className="flex flex-col pl-8">
+        <div className="grid z-10 place-items-center absolute -left-12 top-1/2 -translate-y-1/2 size-20 rounded-full shadow-lg bg-black text-white">
+          <img src="/images/aztec_bg.png" alt="logo" />
+        </div>
+        <p className="text-white font-semibold">Aztec Auto Glass</p>
+        <p className="text-sm text-zinc-400">
+          Your quote has been sent successfully!
+        </p>
+      </div>
+    );
+  };
+
+  // Validate form fields and steps
+  useEffect(() => {
+    const isBookingComplete =
+      bookingData.carType &&
+      bookingData.year &&
+      bookingData.make &&
+      bookingData.model &&
+      bookingData.service.length > 0 &&
+      bookingData.selectedDate &&
+      bookingData.selectedTime;
+
+    setIsReady(isBookingComplete);
+  }, [bookingData]);
+
   const sendEmail = (e) => {
     e.preventDefault();
 
-    try {
-      const serviceID = process.env.REACT_APP_SERVICE_ID;
-      const templateID = process.env.REACT_APP_TEMPLATE_ID;
-      const userPublicID = process.env.REACT_APP_EMAIL_PUBLIC_KEY;
-      const formData = new FormData(form.current);
-      const formFields = Object.fromEntries(formData.entries());
+    const serviceID = process.env.REACT_APP_SERVICE_ID;
+    const templateID = process.env.REACT_APP_TEMPLATE_ID;
+    const userPublicID = process.env.REACT_APP_EMAIL_PUBLIC_KEY;
+    const formData = new FormData(form.current);
+    const formFields = Object.fromEntries(formData.entries());
 
-      const emailParams = {
-        ...formFields,
-        company_name: "Aztec",
-        car_type: bookingData.carType,
-        year: bookingData.year,
-        make: bookingData.make,
-        model: bookingData.model,
-        service: bookingData.service
-          .map(
-            (s) =>
-              `<div style="color: #000000; font-weight: 800; font-size: 1.2rem; line-height: 2.25rem;">
+    const emailParams = {
+      ...formFields,
+      company_name: "Aztec",
+      car_type: bookingData.carType,
+      year: bookingData.year,
+      make: bookingData.make,
+      model: bookingData.model,
+      service: bookingData.service
+        .map(
+          (s) =>
+            `<div style="color: #000000; font-weight: 800; font-size: 1.2rem; line-height: 2.25rem;">
               ${s.name}
             </div>`
-          )
-          .join(""), // Join all services into a single string
-        selected_date: bookingData.selectedDate,
-        selected_time: bookingData.selectedTime,
-        estimated_duration: totalDuration > 0 ? `${totalDuration} min` : "-",
-      };
+        )
+        .join(""), // Join all services into a single string
+      selected_date: bookingData.selectedDate,
+      selected_time: bookingData.selectedTime,
+      estimated_duration: totalDuration > 0 ? `${totalDuration} min` : "-",
+    };
 
-      emailjs.send(serviceID, templateID, emailParams, userPublicID);
-      alert("Quote request has been sent successfully!");
-    } catch (error) {
-      alert("Failed to send email. Please try again.");
-    }
+    emailjs.send(serviceID, templateID, emailParams, userPublicID).then(
+      () => {
+        // Clear the form fields
+        form.current.reset();
+        toast(WithAvatar, {
+          className:
+            "shadow-lg overflow-visible scale-100 ring-1 ring-black/5 rounded-xl flex items-center gap-6 bg-slate-800 highlight-white/5",
+        });
+      },
+      (error) => {
+        toast(`Quote failed to send: ${error.text}`);
+      }
+    );
   };
 
   return (
@@ -279,7 +321,9 @@ const StepFour = () => {
             name="customer_additionalInfo"
             placeholder="Additional Information"
           />
-          <SubmitButton type="submit">Get Quote</SubmitButton>
+          <SubmitButton type="submit" disabled={!isReady} $isComplete={isReady}>
+            Get Quote
+          </SubmitButton>
         </Form>
       </FormSection>
     </Container>

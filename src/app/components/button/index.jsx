@@ -55,13 +55,14 @@ const Button = (props) => {
   const navigate = useNavigate();
 
   if (theme === "outlined") {
+    if (phone) {
+      return (
+        <a href={`tel:${phone}`} style={{ textDecoration: "none" }}>
+          <FilledButton>{text}</FilledButton>
+        </a>
+      );
+    }
     return <FilledButton>{text}</FilledButton>;
-  } else if (phone) {
-    return (
-      <a href={`tel:${phone}`} style={{ textDecoration: "none" }}>
-        <FilledButton>{text}</FilledButton>
-      </a>
-    );
   } else {
     return (
       <OutlinedButton onClick={() => navigate("/quote")}>{text}</OutlinedButton>

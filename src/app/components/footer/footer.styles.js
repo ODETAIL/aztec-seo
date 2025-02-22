@@ -78,9 +78,8 @@ export const ListItem = styled.li`
   & > a {
     ${tw`
       text-sm
-    text-white
-      transition-all
-      hover:text-gray-200
+      text-white
+      hover:text-cBlue
     `};
   }
 `;
@@ -157,6 +156,7 @@ export const SmallText = styled.h6`
   ${tw`
     text-sm
     text-white
+    hover:text-cBlue
   `};
 `;
 

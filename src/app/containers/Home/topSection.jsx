@@ -120,7 +120,7 @@ const TopSection = () => {
         </Description>
         <ButtonsContainer>
           <Button theme="filled" text="Get Free Quote" />
-          <Button theme="outlined" text="Call Us Now" phone="+15879667636" />
+          <Button theme="outlined" text="Call Us Now" phone="5879667636" />
         </ButtonsContainer>
       </HeaderSection>
     </TopSectionContainer>

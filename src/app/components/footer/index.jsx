@@ -2,7 +2,7 @@ import { faEnvelope, faPhoneAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import * as styles from "./footer.styles";
-import { faInstagram } from "@fortawesome/free-brands-svg-icons";
+import { faFacebook, faInstagram } from "@fortawesome/free-brands-svg-icons";
 import { Link } from "react-router-dom";
 
 export function Footer() {
@@ -35,16 +35,16 @@ export function Footer() {
               <Link to="/">Home</Link>
             </styles.ListItem>
             <styles.ListItem>
-              <Link to="/about">About Us</Link>
+              <Link to="/">About Us</Link>
             </styles.ListItem>
-            <styles.ListItem>
+            {/* <styles.ListItem>
               <Link to="/services">Services</Link>
-            </styles.ListItem>
+            </styles.ListItem> */}
             <styles.ListItem>
               <Link to="/quote">Get Quote</Link>
             </styles.ListItem>
             <styles.ListItem>
-              <Link to="/blog">Blog</Link>
+              <Link to="/">Blog</Link>
             </styles.ListItem>
           </styles.LinksList>
         </styles.SectionContainer>
@@ -52,13 +52,13 @@ export function Footer() {
           <styles.HeaderTitle>Other Links</styles.HeaderTitle>
           <styles.LinksList>
             <styles.ListItem>
-              <Link to="/faq">FAQ</Link>
+              <Link to="/">FAQ</Link>
             </styles.ListItem>
             <styles.ListItem>
               <Link to="/contact">Contact Us</Link>
             </styles.ListItem>
             <styles.ListItem>
-              <Link to="/support">Support</Link>
+              <Link to="/">Support</Link>
             </styles.ListItem>
             <styles.ListItem>
               <Link to="/privacy-policy">Privacy Policy</Link>
@@ -71,19 +71,39 @@ export function Footer() {
             <styles.BlueIcon>
               <FontAwesomeIcon icon={faPhoneAlt} />
             </styles.BlueIcon>
-            <styles.SmallText>+1 587-966-7636</styles.SmallText>
+            <styles.SmallText>
+              <a href="tel:587-966-7636">+1 587-966-7636</a>
+            </styles.SmallText>
           </styles.HorizontalContainer>
           <styles.HorizontalContainer>
             <styles.BlueIcon>
               <FontAwesomeIcon icon={faEnvelope} />
             </styles.BlueIcon>
-            <styles.SmallText>quotes@aztecautoglass.ca</styles.SmallText>
+            <styles.SmallText>
+              <a href="mailto:quotes@aztecautoglass.ca">
+                quotes@aztecautoglass.ca
+              </a>
+            </styles.SmallText>
           </styles.HorizontalContainer>
           <styles.HorizontalContainer>
             <styles.BlueIcon>
               <FontAwesomeIcon icon={faInstagram} />
             </styles.BlueIcon>
-            <styles.SmallText>@aztecautoglass_yyc</styles.SmallText>
+            <styles.SmallText>
+              <a href="https://www.instagram.com/aztecautoglass_yyc">
+                @aztecautoglass_yyc
+              </a>
+            </styles.SmallText>
+          </styles.HorizontalContainer>
+          <styles.HorizontalContainer>
+            <styles.BlueIcon>
+              <FontAwesomeIcon icon={faFacebook} />
+            </styles.BlueIcon>
+            <styles.SmallText>
+              <a href="https://www.facebook.com/people/Aztec-Autoglass/61550110215034/">
+                Aztec Auto Glass
+              </a>
+            </styles.SmallText>
           </styles.HorizontalContainer>
         </styles.SectionContainer>
       </styles.InnerContainer>
