@@ -13,6 +13,7 @@ import {
   faClockRotateLeft,
 } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
+import { AdditionalOptions } from "../../utils/constants";
 
 const Container = styled.div`
   ${tw`
@@ -80,7 +81,6 @@ const FormSection = styled.div`
     rounded-lg
     p-10
     shadow-lg
-    justify-items-center
   `}
 `;
 
@@ -90,6 +90,14 @@ const FormTitle = styled.h2`
     font-bold
     text-cBlue
     mb-4
+  `}
+`;
+
+const FormSubtitle = styled.h3`
+  ${tw`
+    text-lg
+    font-bold
+    text-cBlue
   `}
 `;
 
@@ -116,6 +124,12 @@ const Input = styled.input`
     text-black
     border
     border-gray-300
+  `}
+`;
+
+const AdditionalInfoContainer = styled.div`
+  ${tw`
+   space-y-6 
   `}
 `;
 
@@ -208,6 +222,15 @@ const StepFour = () => {
     const formData = new FormData(form.current);
     const formFields = Object.fromEntries(formData.entries());
 
+    const selectedSensors = [
+      formFields.rain_sensors && "Rain Sensors",
+      formFields.rain_lane_sensors && "Rain & Lane Sensors",
+      formFields.heads_up_display && "Heads-Up Display",
+      formFields.not_sure && "Not Sure",
+    ]
+      .filter(Boolean)
+      .join(", ");
+
     const emailParams = {
       ...formFields,
       company_name: "Aztec",
@@ -215,6 +238,7 @@ const StepFour = () => {
       year: bookingData.year,
       make: bookingData.make,
       model: bookingData.model,
+      sensors: selectedSensors || "None",
       service: bookingData.service
         .map(
           (s) =>
@@ -316,11 +340,43 @@ const StepFour = () => {
             placeholder="Phone Number *"
             required
           />
-          <TextArea
-            rows="4"
-            name="customer_additionalInfo"
-            placeholder="Additional Information"
-          />
+          <AdditionalInfoContainer>
+            <FormSubtitle>Additional Information</FormSubtitle>
+
+            <div className="grid grid-cols-2 gap-4">
+              {AdditionalOptions.map((option) => (
+                <div key={option.name} className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    name={option.name}
+                    id={option.name}
+                    value="Yes"
+                    className="accent-cBlue size-4"
+                  />
+                  <label
+                    htmlFor={option.name}
+                    className="text-white whitespace-nowrap"
+                  >
+                    {option.label}
+                  </label>
+                </div>
+              ))}
+            </div>
+
+            <Input
+              type="text"
+              name="vin_number"
+              placeholder="VIN Number (optional)"
+              className="mt-4"
+            />
+
+            <TextArea
+              rows="4"
+              name="customer_additionalInfo"
+              placeholder="Additional Information"
+            />
+          </AdditionalInfoContainer>
+
           <SubmitButton type="submit" disabled={!isReady} $isComplete={isReady}>
             Get Quote
           </SubmitButton>

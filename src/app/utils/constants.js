@@ -20,6 +20,13 @@ export const CarTypes = [
   { name: "Coupe", qName: "car", image: Coupe },
 ];
 
+export const AdditionalOptions = [
+  { label: "Rain Sensors", name: "rain_sensors" },
+  { label: "Rain & Lane Sensors", name: "rain_lane_sensors" },
+  { label: "Heads-Up Display", name: "heads_up_display" },
+  { label: "Not Sure", name: "not_sure" },
+];
+
 export const GlassTypes = [
   {
     title: "Windshield",
